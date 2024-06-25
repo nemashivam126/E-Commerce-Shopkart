@@ -1,8 +1,2 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# E-Commerce-Shopkart
+Shopkart is a dummy e-commerce application designed to simulate an online shopping experience, featuring product listings, a shopping cart, and a simple checkout process. It also includes an admin panel for managing products, orders, and users. Ideal for demonstrating basic e-commerce functionalities and user interface design.
