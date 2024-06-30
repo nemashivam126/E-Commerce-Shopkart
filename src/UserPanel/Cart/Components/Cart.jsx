@@ -130,7 +130,7 @@ const Cart = () => {
     }
 
     return (
-        <Grid container spacing={2} maxHeight={'85vh'} overflow={'auto'}>
+        <Grid container px={4} py={1} spacing={2} maxHeight={'85vh'} overflow={'auto'}>
             <Grid item xs={8} mb={1}>
                 <Typography variant="h5" gutterBottom>
                     Your Shopping Cart

@@ -1,16 +1,17 @@
 import { Edit } from "@mui/icons-material";
-import { Box, Button, Grid, IconButton, Paper, Typography } from "@mui/material";
+import { Box, Button, Checkbox, Grid, IconButton, Paper, Typography } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { addSnackbarState } from "../../../Redux/Snackbar/SnackbarSlice";
 
 const AddressDetails = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const { token, user } = useSelector(state => state.auth);
     const [addresses, setAddresses] = useState([]);
-    const [selectedAddressId, setSelectedAddressId] = useState(null);
-    console.log(addresses.length);
+    const [selectedAddress, setSelectedAddress] = useState(null);
 
     const fetchAddresses = async () => {
         try {
@@ -35,15 +36,23 @@ const AddressDetails = () => {
 
     const handleSelectAddress = async (addressId) => {
         try {
-            await axios.put(`http://localhost:5000/shopkart/user/${user.id}/selected-address/${addressId}`, {}, {
+            const response = await axios.put(`http://localhost:5000/shopkart/user/${user.id}/selected-address/${addressId}`, {}, {
                 headers: {
                     Token: token
                 }
             });
-            setSelectedAddressId(addressId);
-            console.log(addressId);
+            setSelectedAddress(response.data.selectedAddress);
         } catch (error) {
             console.error('Error setting selected address:', error);
+        }
+    };
+
+    const handleCheckboxClick = (addressId) => {
+        if (selectedAddress?._id === addressId) {
+            setSelectedAddress(null); // Uncheck the checkbox if already selected
+        } else {
+            const selected = addresses.find(address => address._id === addressId);
+            setSelectedAddress(selected); // Check the checkbox
         }
     };
 
@@ -51,10 +60,16 @@ const AddressDetails = () => {
         if (addresses.length === 0) {
             navigate('/add-address');
         } else {
-            if (selectedAddressId) {
+            if (selectedAddress) {
                 navigate('/checkout');
             } else {
-                alert("Please select an address to proceed.");
+                dispatch(
+                    addSnackbarState({
+                      snackbarOpen: true,
+                      snackbarMessage: 'Please select an address to proceed.',
+                      snackbarSeverity: "error",
+                    })
+                );
             }
         }
     };
@@ -65,12 +80,17 @@ const AddressDetails = () => {
                 Your Addresses
             </Typography>
             {addresses.map(address => (
-                <Grid item xs={12} key={address._id} onClick={() => handleSelectAddress(address._id)}>
-                    <Paper elevation={3} sx={{ padding: 2, display: 'flex', alignItems: 'center', backgroundColor: selectedAddressId === address._id ? 'lightblue' : '#fff', cursor: 'pointer' }}>
-                        <Grid container spacing={2}>
+                <Grid item xs={12} key={address._id}>
+                    <Paper elevation={3} sx={{ padding: 2, display: 'flex', alignItems: 'center', backgroundColor: selectedAddress?._id === address._id ? 'lightblue' : '#fff', cursor: 'pointer' }}>
+                        <Checkbox
+                            checked={selectedAddress?._id === address._id}
+                            onChange={() => handleCheckboxClick(address._id)}
+                            inputProps={{ 'aria-label': 'Select Address' }}
+                            sx={{ marginRight: 2 }}
+                        />
+                        <Grid container spacing={1} onClick={() => handleSelectAddress(address._id)}>
                             <Grid item xs={10} >
                                 <Typography fontWeight={700}>{address.label}</Typography>
-                                {/* <Typography variant="body2" color="textSecondary">{address.state}, {address.pincode}</Typography> */}
                             </Grid>
                             <Grid item xs={10}>
                                 <Typography variant="subtitle1">{address.street}, {address.city}</Typography>
@@ -85,11 +105,11 @@ const AddressDetails = () => {
                     </Paper>
                 </Grid>
             ))}
-            <Button onClick={handleAddOrUpdateAddress} variant="contained" color="primary" sx={{ mt: 2 }}>
+            {addresses.length !== 0 && <Button onClick={handleAddOrUpdateAddress} variant="contained" color="primary" sx={{ mt: 2 }}>
                 Add Address
-            </Button>
+            </Button>}
             <Button onClick={handleCheckout} variant="contained" color="primary" sx={{ mt: 2, ml: 1 }}>
-                Use This Address
+                {addresses.length === 0 ? "Add Address" : "Use This Address"}
             </Button>
         </Box>
     );

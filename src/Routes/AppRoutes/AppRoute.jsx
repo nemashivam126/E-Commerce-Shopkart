@@ -18,8 +18,10 @@ import AddressDetails from "../../UserPanel/AddressDetails/Components/AddressDet
 export const AppRoutes = createBrowserRouter(
     createRoutesFromElements(
       <>
+        {/* Public Routes */}
         <Route path="/login" element={<PublicRoute><LoginForm /></PublicRoute>}/>
         <Route path="/signup" element={<PublicRoute><SignUpUser /></PublicRoute>}/>
+        {/* User Routes */}
         <Route path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>} >
           <Route index element={<PrivateRoute><Products /></PrivateRoute>} />
           <Route  path="cart" element={<PrivateRoute><Cart /></PrivateRoute>} />
@@ -28,6 +30,7 @@ export const AppRoutes = createBrowserRouter(
           <Route  path="add-address" element={<PrivateRoute><AddressForm /></PrivateRoute>} />
           <Route  path="user-address" element={<PrivateRoute><AddressDetails /></PrivateRoute>} />
         </Route>
+        {/* Admin Routes */}
         <Route path="/admin" element={<AdminRoute><Sidebar /></AdminRoute>} >
           <Route  path="add-product" element={<AdminRoute><ProductForm /></AdminRoute>} />
           <Route  path="manage-products" element={<AdminRoute><ProductGrid /></AdminRoute>} />
