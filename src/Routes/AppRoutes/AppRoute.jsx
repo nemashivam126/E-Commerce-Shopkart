@@ -14,6 +14,12 @@ import AdminRoute from "../HOC/AdminRoute/AdminRoute";
 import AddAccount from "../../AdminPanel/AddAccount/Components/AddAccount";
 import AddressForm from "../../UserPanel/AddressForm/Components/AddressForm";
 import AddressDetails from "../../UserPanel/AddressDetails/Components/AddressDetails";
+import Checkout from "../../UserPanel/Checkout/Components/Checkout";
+import Payment from "../../UserPanel/PaymentDetails/Components/Payment";
+import OrderConfirmation from "../../UserPanel/OtherDetails/Components/OrderConfirmation";
+import MyOrders from "../../UserPanel/Orders/Components/MyOrders";
+import OrderStatus from "../../UserPanel/Orders/Components/OrderStatus";
+import UserOrdersList from "../../AdminPanel/UserOrdersList/UserOrdersList";
 
 export const AppRoutes = createBrowserRouter(
     createRoutesFromElements(
@@ -29,12 +35,18 @@ export const AppRoutes = createBrowserRouter(
           <Route  path="product/:id" element={<PrivateRoute><ProductDetails /></PrivateRoute>} />
           <Route  path="add-address" element={<PrivateRoute><AddressForm /></PrivateRoute>} />
           <Route  path="user-address" element={<PrivateRoute><AddressDetails /></PrivateRoute>} />
+          <Route  path="checkout" element={<PrivateRoute><Checkout /></PrivateRoute>} />
+          <Route  path="payment-details" element={<PrivateRoute><Payment /></PrivateRoute>} />
+          <Route  path="order-confirmation" element={<PrivateRoute><OrderConfirmation /></PrivateRoute>} />
+          <Route  path="my-orders" element={<PrivateRoute><MyOrders /></PrivateRoute>} />
+          <Route  path="/order-status/:itemId" element={<PrivateRoute><OrderStatus /></PrivateRoute>} />
         </Route>
         {/* Admin Routes */}
         <Route path="/admin" element={<AdminRoute><Sidebar /></AdminRoute>} >
           <Route  path="add-product" element={<AdminRoute><ProductForm /></AdminRoute>} />
           <Route  path="manage-products" element={<AdminRoute><ProductGrid /></AdminRoute>} />
           <Route  path="add-admin-account" element={<AdminRoute><AddAccount /></AdminRoute>} />
+          <Route  path="user-orders-list" element={<AdminRoute><UserOrdersList /></AdminRoute>} />
         </Route>
       </>
     )

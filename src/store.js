@@ -14,12 +14,19 @@ import cartCount from "./Redux/CartSlice/cartCount";
 import adminSignIn from "./Redux/AuthSlice/adminSignIn";
 import adminSignUp from "./Redux/AuthSlice/adminSignUp";
 import getIDs from "./Redux/GetIDs/getIDs";
+import Addresses from "./Redux/AddressSlice/Addresses";
+import SelectedAddress from "./Redux/AddressSlice/SelectedAddress";
+import getProductbyId from "./Redux/ProductSlice/getProductbyId";
+import fetchCart from "./Redux/CartSlice/fetchCart";
+import Orders from "./Redux/OrderSlice/Orders";
+import OrderStatus from "./Redux/OrderSlice/OrderStatus";
 
 const rootReducer = combineReducers({
     snackbar: snackbarSlice,
     getProducts: getProductSlice,
     removeProduct: removeProductSlice,
     viewProduct: viewProduct,
+    getProduct: getProductbyId,
     search: SearchTerm,
     auth: auth,
     adminSignIn: adminSignIn,
@@ -28,13 +35,18 @@ const rootReducer = combineReducers({
     userSignUp: userSignUp,
     removeCart: removefromCart,
     cartCount: cartCount,
-    getIDs: getIDs
+    getIDs: getIDs,
+    addresses: Addresses,
+    selectedAddress: SelectedAddress,
+    getUserCart: fetchCart,
+    orders: Orders,
+    orderStatus: OrderStatus
 })
 
 const persistConfig = {
     key: "root",
     storage,
-    whitelist: ["auth", "adminSignIn", "userSignIn", "adminSignUp", "userSignUp"] //slices to be persisted
+    whitelist: ["auth", "adminSignIn", "userSignIn", "adminSignUp", "userSignUp", "getProduct", "getUserCart", "orders", "selectedAddress", "orderStatus"] //slices to be persisted
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

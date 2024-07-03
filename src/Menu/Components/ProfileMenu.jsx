@@ -9,11 +9,14 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import PersonAdd from '@mui/icons-material/PersonAdd';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import { useDispatch, useSelector } from 'react-redux';
 import { signOut } from '../../Redux/AuthSlice/auth';
 import { useNavigate } from 'react-router-dom';
+import { resetOrders } from '../../Redux/OrderSlice/Orders';
+import { resetSelectedAddress } from '../../Redux/AddressSlice/SelectedAddress';
 
 export default function ProfileMenu() {
   const dispatch = useDispatch();
@@ -30,8 +33,14 @@ export default function ProfileMenu() {
   const handleAddAcc = () => {
     navigate('/admin/add-admin-account')
   };
+  const handleNavigate = () => {
+    navigate('/my-orders')
+    setAnchorEl(null);
+  };
   const handleLogout = () => {
     dispatch(signOut());
+    dispatch(resetSelectedAddress());
+    dispatch(resetOrders());
     localStorage.removeItem('token');
     setAnchorEl(null);
   };
@@ -95,6 +104,9 @@ export default function ProfileMenu() {
         <MenuItem onClick={handleClose}>
           <Avatar /> My account
         </MenuItem>
+        {!isAdmin && <MenuItem onClick={handleNavigate}>
+          <Avatar sx={{bgcolor: 'transparent'}}><ReceiptLongIcon color='warning' /></Avatar> My Orders
+        </MenuItem>}
         <Divider />
         {isAdmin && <MenuItem onClick={handleAddAcc}>
           <ListItemIcon>
@@ -110,7 +122,7 @@ export default function ProfileMenu() {
         </MenuItem> */}
         <MenuItem sx={{color:'red'}} onClick={handleLogout}>
           <ListItemIcon>
-            <Logout fontSize="small" color='error' />
+            <Avatar style={{background: 'transparent'}}><Logout fontSize="small" color='error' /></Avatar>
           </ListItemIcon>
           Logout
         </MenuItem>

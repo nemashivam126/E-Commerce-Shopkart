@@ -9,6 +9,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import { removeFromCartAsync } from '../../../Redux/CartSlice/removefromCart';
 import { shortenDescription } from '../../Utils/shortDescription';
+import { fetchCartDetailsAsync } from '../../../Redux/CartSlice/fetchCart';
 
 const Cart = () => {
     const dispatch = useDispatch();
@@ -24,6 +25,7 @@ const Cart = () => {
                     Token: token
                 }
             });
+            dispatch(fetchCartDetailsAsync(user.id))
             setIsEmpty(false);
             const cartData = response.data;
 

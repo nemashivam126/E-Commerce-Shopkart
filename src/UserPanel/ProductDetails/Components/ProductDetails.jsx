@@ -56,7 +56,8 @@ export const ProductDetails = () => {
         productId: product?._id,
         quantity: quantity,
         productSize: selectedSize,
-        productColor: selectedColor
+        productColor: selectedColor,
+        productPrice: product?.price
     }
 
     const handleAddtoCart = async () => {
