@@ -97,6 +97,11 @@ export const ProductDetails = () => {
         }
     }
 
+    const handleBuyNow = () => {
+        handleAddtoCart();
+        navigate('/cart')
+    }
+
     if(status === 'loading') {
         return (
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
@@ -234,7 +239,7 @@ export const ProductDetails = () => {
                             </div>
                             <div className="my-3 flex">
                                 <Button onClick={handleAddtoCart} startIcon={<ShoppingCartIcon />} sx={{mr:1}} fullWidth variant="contained">Add to Cart</Button>
-                                <Button startIcon={<LocalMallIcon />} color="warning" fullWidth variant="contained">Buy Now</Button>
+                                <Button onClick={handleBuyNow} startIcon={<LocalMallIcon />} color="warning" fullWidth variant="contained">Buy Now</Button>
                             </div>
                         </div>
                     </div>

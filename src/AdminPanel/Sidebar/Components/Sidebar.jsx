@@ -20,6 +20,7 @@ import ListItemText from '@mui/material/ListItemText';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
+import FactCheckIcon from '@mui/icons-material/FactCheck';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { signOut } from '../../../Redux/AuthSlice/auth';
@@ -103,6 +104,7 @@ export default function Sidebar() {
     { text: "Add Product", icon: <AddShoppingCartIcon />, path: '/admin/add-product' },
     { text: "Manage Products", icon: <ManageHistoryIcon />, path: '/admin/manage-products' },
     { text: "Add Admin Account", icon: <PersonAdd />, path: '/admin/add-admin-account' },
+    { text: "User Orders", icon: <FactCheckIcon />, path: '/admin/user-orders' },
   ]
   const SideBarMenuAuthItem = [
     { text: isLogout ? <CircularProgress size={15}/> : "Logout", icon: <LogoutIcon />, path: '/login' },

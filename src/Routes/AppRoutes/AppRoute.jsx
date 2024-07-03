@@ -46,7 +46,7 @@ export const AppRoutes = createBrowserRouter(
           <Route  path="add-product" element={<AdminRoute><ProductForm /></AdminRoute>} />
           <Route  path="manage-products" element={<AdminRoute><ProductGrid /></AdminRoute>} />
           <Route  path="add-admin-account" element={<AdminRoute><AddAccount /></AdminRoute>} />
-          <Route  path="user-orders-list" element={<AdminRoute><UserOrdersList /></AdminRoute>} />
+          <Route  path="user-orders" element={<AdminRoute><UserOrdersList /></AdminRoute>} />
         </Route>
       </>
     )

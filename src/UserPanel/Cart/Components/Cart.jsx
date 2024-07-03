@@ -46,6 +46,11 @@ const Cart = () => {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        // Fetch cart data when component mounts
+        fetchCart();
+    }, []);
     
     useEffect(() => {
         // Fetch cart data when component mounts
