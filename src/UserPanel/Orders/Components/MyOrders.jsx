@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Typography, Button, Grid, Paper, CircularProgress, Divider } from '@mui/material';
+import { Box, Typography, Button, Grid, Paper, CircularProgress, Divider, Chip, Select, MenuItem } from '@mui/material';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { fetchOrdersAsync } from '../../../Redux/OrderSlice/Orders';
 import { shortenDescription } from '../../Utils/shortDescription';
+import { SentimentVeryDissatisfied } from '@mui/icons-material';
 
 const MyOrders = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ const MyOrders = () => {
   const loading = useSelector(state => state.orders.loading);
   const [detailedOrders, setDetailedOrders] = useState([]);
   const [detailedLoading, setDetailedLoading] = useState(true);
+  const [filter, setFilter] = useState('ongoing'); // Default filter
 
   useEffect(() => {
     if (user.id) {
@@ -36,7 +38,7 @@ const MyOrders = () => {
       });
 
       const detailedOrdersResults = await Promise.all(detailedOrdersPromises);
-      setDetailedOrders(detailedOrdersResults);
+      setDetailedOrders(detailedOrdersResults?.reverse());
       setDetailedLoading(false);
     };
 
@@ -47,6 +49,19 @@ const MyOrders = () => {
     }
   }, [orders, token]);
 
+  const filterOrders = (order) => {
+    if (filter === 'recent') {
+      return true; // Show all orders
+    } else if (filter === 'delivered') {
+      return order.items.some(item => item.status === 'Delivered');
+    } else if (filter === 'cancelled') {
+      return order.items.some(item => item.status === 'Cancelled');
+    } else if (filter === 'ongoing') {
+      return order.items.every(item => item.status !== 'Delivered' && item.status !== 'Cancelled');
+    }
+    return true; // Default to show all orders
+  };
+
   if (loading || detailedLoading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
@@ -56,25 +71,44 @@ const MyOrders = () => {
   }
 
   return (
-    <Box sx={{ px: 4, py: 2 }}>
-      {detailedOrders.length === 0 ? (
-        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
-          <Typography variant="h6" color="error">
+    <Box sx={{ px: 4, py: 2, height: '85vh', overflow: 'auto' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+        <Typography variant="h5" fontWeight={600} textTransform={'uppercase'} color={'brown'}>
+          Your Orders
+        </Typography>
+        <Select
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          variant="outlined"
+          size='small'
+          sx={{ minWidth: 200, bgcolor: 'lightgray' }}
+        >
+          <MenuItem value="recent">Recent Orders</MenuItem>
+          <MenuItem value="delivered">Delivered Orders</MenuItem>
+          <MenuItem value="cancelled">Cancelled Orders</MenuItem>
+          <MenuItem value="ongoing">Current Orders</MenuItem>
+        </Select>
+      </Box>
+      <Grid container spacing={5} sx={{ maxHeight: '85vh', overflowY: 'auto' }}>
+        {detailedOrders.length === 0 ? (
+          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '70vh', width: '100%' }}>
+          <SentimentVeryDissatisfied color="error" sx={{ fontSize: 100, mb: 2 }} />
+          <Typography variant="h6" color="error" sx={{ textAlign: 'center' }}>
             {"Looks like you haven't placed any orders yet."}
           </Typography>
           <Button component={Link} to="/products" variant="contained" color="primary" sx={{ mt: 2 }}>
             {"Continue Shopping"}
           </Button>
         </Box>
-      ) : (
-        <>
-          <Typography variant="h5" gutterBottom>
-            Your Orders
-          </Typography>
-          <Grid container spacing={4} sx={{ maxHeight: '85vh', overflowY: 'auto' }}>
-            {detailedOrders.map((order) => (
-              <Grid item xs={12} key={order._id}>
-                <Paper elevation={3} sx={{ padding: 3 }}>
+        ) : detailedOrders.filter(filterOrders).length < 1 ?
+            <Typography variant="h6" color="error" sx={{height:'50vh', width: '100%', display:'flex', justifyContent:'center', alignItems:'center', flexDirection: 'column'}}>
+              {`No order found under the selected category "${filter === "ongoing" ? 'Current' : filter.charAt(0).toLocaleUpperCase()+filter.slice(1)} Orders"`}
+            </Typography>
+        :
+        (
+          detailedOrders.filter(filterOrders).map((order) => (
+            <Grid item xs={12} key={order._id}>
+               <Paper elevation={3} sx={{ padding: 3 }}>
                   <Grid container spacing={3}>
                     <Grid item xs={12} md={8}>
                       <Typography variant="h6" gutterBottom>
@@ -91,7 +125,6 @@ const MyOrders = () => {
                         <Paper key={item._id} elevation={1} sx={{ padding: 2, marginBottom: 2 }}>
                           <Grid component={Link} to={`/order-status/${item._id}`} container spacing={2}>
                             <Grid item xs={3} display="flex" justifyContent="center" alignItems="center">
-                            {/* component={Link} to={`/product/${item.productId}`} */}
                               <img src={item.productDetails.thumbnail} alt={item.productDetails.title} width={80} height={80} style={{ objectFit: 'cover', borderRadius: 8 }} />
                             </Grid>
                             <Grid item xs={9}>
@@ -101,8 +134,8 @@ const MyOrders = () => {
                               </Typography>
                               <Grid container spacing={2} sx={{ mt: 1 }}>
                                 <Grid item xs={3}>
-                                    <Typography variant="subtitle1">Size: {item.productSize}</Typography>
-                                    <Typography variant="subtitle1">Color: {item.productColor}</Typography>
+                                  <Typography variant="subtitle1">Size: {item.productSize}</Typography>
+                                  <Typography variant="subtitle1">Color: {item.productColor}</Typography>
                                 </Grid>
                                 <Grid item xs={3}>
                                   <Typography variant="subtitle1">Price</Typography>
@@ -114,7 +147,29 @@ const MyOrders = () => {
                                 </Grid>
                                 <Grid item xs={3}>
                                   <Typography variant="subtitle1">Status</Typography>
-                                  <Typography variant="subtitle1">{item.status}</Typography>
+                                  <Typography variant="subtitle1">
+                                    {item.status === 'Delivered' && (
+                                      <Chip label="Delivered" color="success" size="small" />
+                                    )}
+                                    {item.status === 'Cancelled' && (
+                                      <Chip label="Cancelled" color="error" size="small" />
+                                    )}
+                                    {item.status === 'Pending' && (
+                                      <Chip label="Pending" color="warning" size="small" />
+                                    )}
+                                    {item.status === 'Processed' && (
+                                      <Chip label="Processed" color="info" size="small" />
+                                    )}
+                                    {item.status === 'Shipped' && (
+                                      <Chip label="Shipped" color="primary" size="small" />
+                                    )}
+                                    {item.status === 'Out for Delivery' && (
+                                      <Chip label="Out for Delivery" color="secondary" size="small" />
+                                    )}
+                                    {/* {item.status !== 'Delivered' && item.status !== 'Cancelled' && item.status &&
+                                      <Chip label={item.status} color="warning" size="small" />
+                                    } */}
+                                  </Typography>
                                 </Grid>
                               </Grid>
                             </Grid>
@@ -136,11 +191,10 @@ const MyOrders = () => {
                     )}
                   </Grid>
                 </Paper>
-              </Grid>
-            ))}
-          </Grid>
-        </>
-      )}
+            </Grid>
+          ))
+        )}
+      </Grid>
     </Box>
   );
 };

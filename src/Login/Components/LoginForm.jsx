@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Avatar, Button, TextField, FormControl, Paper, Box, Typography, Container, CircularProgress, InputAdornment } from '@mui/material';
+import { Avatar, Button, TextField, FormControl, Paper, Box, Typography, Container, CircularProgress, InputAdornment, FormControlLabel, Switch } from '@mui/material';
 import { LockOutlined, Visibility, VisibilityOff, AdminPanelSettings } from '@mui/icons-material';
 import { userSignInAsync } from '../../Redux/AuthSlice/userSignIn';
 import { Link } from 'react-router-dom';
@@ -25,8 +25,8 @@ const LoginForm = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs" sx={{display:'flex', justifyContent: 'center', alignItems:'center', height:'90vh'}}>
-      <Button onClick={() => setAdmin(!admin)} sx={{position: 'absolute', top:15, right:15,}} variant='contained' size='small' color={!admin ? 'error' : 'primary'}>{!admin ? 'Admin Panel' : 'Shopkart User'}</Button>
+    <Container component="main" maxWidth="xs" sx={{display:'flex', justifyContent: 'center', alignItems:'center', flexDirection:'column', height:'90vh'}}>
+      {/* <Button onClick={() => setAdmin(!admin)} sx={{position: 'absolute', top:15, right:15,}} variant='contained' size='small' color={!admin ? 'error' : 'primary'}>{!admin ? 'Admin Panel' : 'Shopkart User'}</Button> */}
       {!admin && <img style={{position: 'absolute', height:'110vh', width: '100vw', left:0, zIndex:-1}} src={LoginBg} alt="" />}
       <Paper elevation={3} sx={{ padding: 3, mt: 8 }}>
         <Box
@@ -83,6 +83,17 @@ const LoginForm = () => {
         </Box>
         {!admin && <Link to={'/signup'}><span className='flex justify-center text-[13px]'>Don't have an account? <span className='text-[#1976d2] font-bold ml-1'>Signup</span></span></Link>}
       </Paper>
+      <FormControlLabel
+        control={
+          <Switch
+            checked={admin}
+            onChange={() => setAdmin(!admin)}
+            color="error"
+          />
+        }
+        label='Login As Admin'
+        sx={{mt: 2}}
+      />
     </Container>
   );
 };

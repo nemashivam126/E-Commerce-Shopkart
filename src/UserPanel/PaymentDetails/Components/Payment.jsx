@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { getCartCountAsync } from '../../../Redux/CartSlice/cartCount';
+import { setIsBuyNow } from '../../../Redux/StatesSlice/States';
 
 const Payment = () => {
     const dispatch = useDispatch();
@@ -13,6 +14,7 @@ const Payment = () => {
     const cart = useSelector(state => state.getUserCart.data);
     const { token, user } = useSelector(state => state.auth);
     const { selectedAddress } = useSelector(state => state.selectedAddress);
+    const { isBuyNow, buyNowData } = useSelector(state => state.shopkartStates);
 
     const formik = useFormik({
         initialValues: {
@@ -47,28 +49,30 @@ const Payment = () => {
                 
                 const totalAmount = orderItems.reduce((total, item) => total + item.amount, 0);
 
-                // Place order logic for user
-                await axios.post(`http://localhost:5000/shopkart/user/${user.id}/orders`, {
-                    items: orderItems,
-                    totalAmount,
-                    address: selectedAddress
-                }, {
-                    headers: {
-                        Token: token
-                    }
-                });
-
-                // Place order for admin
-                await axios.post('http://localhost:5000/shopkart/admin/user-order/orders', {
-                    userId: user.id,
-                    items: orderItems,
-                    totalAmount,
-                    address: selectedAddress._id
-                }, {
-                    headers: {
-                        Token: token
-                    }
-                });
+                if(isBuyNow) {
+                    await axios.post(`http://localhost:5000/shopkart/user/${user.id}/buynow`, {
+                        productId: buyNowData.productId,
+                        quantity: buyNowData.quantity,
+                        productSize: buyNowData.productSize,
+                        productColor: buyNowData.productColor,
+                        amount: buyNowData.amount,
+                        address: selectedAddress,
+                    }, {
+                        headers: {
+                            Token: token
+                        }
+                    });
+                } else {
+                    await axios.post(`http://localhost:5000/shopkart/user/${user.id}/orders`, {
+                        items: orderItems,
+                        totalAmount,
+                        address: selectedAddress
+                    }, {
+                        headers: {
+                            Token: token
+                        }
+                    });
+                }
 
                 dispatch(getCartCountAsync(user.id));
                 // // Empty the cart
@@ -77,11 +81,7 @@ const Payment = () => {
                 //         Token: token
                 //     }
                 // });
-
-                // Dispatch an action to clear cart in Redux store (if needed)
-                // dispatch({ type: 'cart/clearCart' });
-
-                // Navigate to order confirmation page
+                dispatch(setIsBuyNow(false));
                 navigate('/order-confirmation');
             } catch (error) {
                 console.error('Error placing order:', error);

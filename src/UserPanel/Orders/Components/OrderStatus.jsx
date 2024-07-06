@@ -1,37 +1,72 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Box, Typography, Stepper, Step, StepLabel, CircularProgress, Paper, Grid, Button } from '@mui/material';
+import { Box, Typography, Stepper, Step, StepLabel, CircularProgress, Paper, Grid, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
-
-const steps = [
-  {
-    label: 'Pending',
-    description: 'Waiting for seller to process your item',
-  },
-  {
-    label: 'Processed',
-    description: 'Your item has been processed!',
-  },
-  {
-    label: 'Shipped',
-    description: 'Your item has been shipped!',
-  },
-  {
-    label: 'Out for Delivery',
-    description: 'Your item is out for delivery!',
-  },
-  {
-    label: 'Delivered',
-    description: 'Your item has been delivered to your address successfully!',
-  },
-];
+import { useDispatch, useSelector } from 'react-redux';
+import { updateOrderStatusAsync } from '../../../Redux/OrderSlice/OrderStatus';
 
 const OrderStatus = () => {
+  const dispatch = useDispatch();
   const { itemId } = useParams();
-  const { token } = useSelector(state => state.auth);
+  const { token, user } = useSelector(state => state.auth);
   const [orderItem, setOrderItem] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = (e) => {
+    e.preventDefault();
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const steps = [
+    {
+      label: 'Pending',
+      description: orderItem?.status === "Pending" ? 'Waiting for seller to process your item' : 'Your item has been checked in by seller.',
+    },
+    {
+      label: 'Processed',
+      description: 'Your item has been processed!',
+    },
+    ...(orderItem?.status === 'Cancelled'
+      ? []
+      : [
+        {
+          label: 'Shipped',
+          description: 'Your item has been shipped!',
+        },
+      ]
+    ),
+    ...(orderItem?.status === 'Cancelled'
+      ? []
+      : [
+        {
+          label: 'Out for Delivery',
+          description: 'Your item is out for delivery!',
+        },
+      ]
+    ),
+    ...(orderItem?.status === 'Cancelled'
+      ? []
+      : [
+        {
+          label: 'Delivered',
+          description: 'Your item has been delivered to your address successfully!',
+        },
+      ]
+    ),
+    ...(orderItem?.status === 'Cancelled'
+      ? [
+          {
+            label: 'Cancelled',
+            description: 'Your item has been cancelled!',
+          },
+        ]
+      : []
+    ),
+  ];
 
   useEffect(() => {
     const fetchOrderItem = async () => {
@@ -52,6 +87,18 @@ const OrderStatus = () => {
 
     fetchOrderItem();
   }, [itemId, token]);
+
+  const handleCancelOrder = (e) => {
+    e.preventDefault();
+    const userId = user.id;
+    const newStatus = 'Cancelled'
+    dispatch(updateOrderStatusAsync({ userId, itemId, newStatus }));
+    setOrderItem(prevOrderItem => ({
+      ...prevOrderItem,
+      status: newStatus  // Update the local orderItem status
+    }));
+    setOpen(false);
+  }
 
   if (loading) {
     return (
@@ -75,18 +122,36 @@ const OrderStatus = () => {
     return steps.findIndex(step => step.label === status);
   };
 
+  const currentStepIndex = getStatusIndex(orderItem.status);
+
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h4" gutterBottom>
         Order Status
       </Typography>
-      <Stepper activeStep={getStatusIndex(orderItem.status)} alternativeLabel>
+      <Stepper activeStep={currentStepIndex} alternativeLabel 
+        // sx={{
+        //   '& .MuiStepConnector-root': {
+        //     borderBottom: '2px solid green', // Sets the border color of the stepper
+        // }}}
+      >
         {steps.map((step, index) => (
-          <Step key={step.label}>
+          <Step key={step.label} completed={index <= currentStepIndex} active={ index == currentStepIndex+1 } 
+            sx={{
+              '& .MuiStepLabel-root .Mui-completed': {
+                color: index === currentStepIndex && step.label === 'Cancelled' ? 'error.dark' : 'success.dark', // circle color (COMPLETED)
+              },
+              '& .MuiStepLabel-root .Mui-active': {
+                color: 'warning.main', // circle color (ACTIVE)
+              },
+            }}
+          >
             <StepLabel>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Typography variant="h6">{step.label}</Typography>
-                <Typography variant="body2">{step.description}</Typography>
+                {index <= currentStepIndex && (
+                  <Typography variant="body2">{step.description}</Typography>
+                )}
               </Box>
             </StepLabel>
           </Step>
@@ -121,7 +186,30 @@ const OrderStatus = () => {
             </Typography>
           </Grid>
         </Grid>
+        {["Cancelled", "Delivered"].includes(orderItem.status) ? null : <Button onClick={(e) => handleClickOpen(e)} variant='outlined' color='error' sx={{float: 'right'}}>Cancel Order</Button>}
       </Paper>
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+      >
+        <DialogTitle>
+          <Typography variant='h5' fontWeight={600}>{`Cancel Order: ${orderItem.productId.title}`}</Typography>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText variant='h6'>
+            {`Are you sure you want to cancel the order?`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant='outlined' onClick={handleClose} color="primary">
+            No
+          </Button>
+          <Button variant='contained' onClick={handleCancelOrder} color="error" autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

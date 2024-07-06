@@ -21,11 +21,13 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { signOut } from '../../../Redux/AuthSlice/auth';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, MenuItem, Select } from '@mui/material';
 import ProfileMenu from '../../../Menu/Components/ProfileMenu';
+import AdminHomePage from '../../AdminHomePage/Components/AdminHomePage';
+import { ShoppingCart } from '@mui/icons-material';
 
 const drawerWidth = 240;
 
@@ -99,7 +101,9 @@ export default function Sidebar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
   const [isLogout, setIsLogout] = React.useState(false);
+  const [filter, setFilter] = React.useState('ongoing'); // Default filter
   const SideBarMenuItem = [
     { text: "Add Product", icon: <AddShoppingCartIcon />, path: '/admin/add-product' },
     { text: "Manage Products", icon: <ManageHistoryIcon />, path: '/admin/manage-products' },
@@ -155,10 +159,27 @@ export default function Sidebar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography sx={!open ? {position: 'absolute', left: 100} : {}} variant="h6" noWrap component="div">
+          <Typography sx={!open ? {position: 'absolute', left: 100, fontFamily: 'monospace', fontWeight: 700, display: 'flex', alignItems:'center'} : {fontFamily: 'monospace', fontWeight: 700, display: 'flex', alignItems:'center'}} variant="h6" noWrap component={NavLink} to={'/admin'}>
+            <ShoppingCart sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
             ShopKart
           </Typography>
-          <Box><ProfileMenu /></Box>
+          <Box display={'flex'} alignItems={'center'}>
+            {location.pathname === '/admin/user-orders' && (
+              <Select
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+                variant="outlined"
+                size='small'
+                sx={{ minWidth: 200, bgcolor: 'lightgray', mr:2 }}
+              >
+                <MenuItem value="recent">Recent Orders</MenuItem>
+                <MenuItem value="delivered">Delivered Orders</MenuItem>
+                <MenuItem value="cancelled">Cancelled Orders</MenuItem>
+                <MenuItem value="ongoing">Current Orders</MenuItem>
+              </Select>
+            )}
+            <ProfileMenu />
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -255,9 +276,9 @@ export default function Sidebar() {
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3, position: "relative", width: "78vw" }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, position: "relative", width: "78vw", height: '100vh' }}>
         <DrawerHeader />
-        {location.pathname === '/admin' ? <Box><Typography className='flex justify-center items-center h-[80vh]' fontSize={25}>WELCOME TO ADMIN PANEL</Typography></Box> : <Outlet />}
+        {location.pathname === '/admin' ? <AdminHomePage /> : <Outlet context={{ filter }} />}
       </Box>
     </Box>
   );

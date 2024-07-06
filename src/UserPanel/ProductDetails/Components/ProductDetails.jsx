@@ -12,6 +12,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Box, Button, CircularProgress, FormControl, FormControlLabel, InputLabel, MenuItem, Radio, RadioGroup, Select, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import { addSnackbarState } from "../../../Redux/Snackbar/SnackbarSlice";
 import { getCartCountAsync } from "../../../Redux/CartSlice/cartCount";
+import { setBuyNowData, setIsBuyNow } from "../../../Redux/StatesSlice/States";
 // import ReactImageMagnify from "react-image-magnify";
 
 export const ProductDetails = () => {
@@ -57,7 +58,9 @@ export const ProductDetails = () => {
         quantity: quantity,
         productSize: selectedSize,
         productColor: selectedColor,
-        productPrice: product?.price
+        productPrice: product?.price,
+        amount: product?.price,
+        status: 'Pending',
     }
 
     const handleAddtoCart = async () => {
@@ -98,8 +101,22 @@ export const ProductDetails = () => {
     }
 
     const handleBuyNow = () => {
-        handleAddtoCart();
-        navigate('/cart')
+        if((product?.availableSizes?.length > 0 && !selectedSize) || (product?.availableColors?.length > 0 && !selectedColor)) {
+            dispatch(
+                addSnackbarState({
+                    snackbarOpen: true,
+                    snackbarMessage: 'Please select size and color before adding to cart!',
+                    snackbarSeverity: "error",
+                })
+            );
+            return;
+        }
+        // handleAddtoCart();
+        // navigate('/cart')
+        // navigate('/user-address', { state: { cartdata } });
+        dispatch(setBuyNowData(cartdata));
+        dispatch(setIsBuyNow(true));
+        navigate('/user-address');
     }
 
     if(status === 'loading') {

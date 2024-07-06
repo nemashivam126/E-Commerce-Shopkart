@@ -20,6 +20,7 @@ import OrderConfirmation from "../../UserPanel/OtherDetails/Components/OrderConf
 import MyOrders from "../../UserPanel/Orders/Components/MyOrders";
 import OrderStatus from "../../UserPanel/Orders/Components/OrderStatus";
 import UserOrdersList from "../../AdminPanel/UserOrdersList/UserOrdersList";
+import HomePage from "../../UserPanel/HomePage/Components/HomePage";
 
 export const AppRoutes = createBrowserRouter(
     createRoutesFromElements(
@@ -29,7 +30,7 @@ export const AppRoutes = createBrowserRouter(
         <Route path="/signup" element={<PublicRoute><SignUpUser /></PublicRoute>}/>
         {/* User Routes */}
         <Route path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>} >
-          <Route index element={<PrivateRoute><Products /></PrivateRoute>} />
+          <Route index element={<PrivateRoute><HomePage /></PrivateRoute>} />
           <Route  path="cart" element={<PrivateRoute><Cart /></PrivateRoute>} />
           <Route  path="products" element={<PrivateRoute><Products /></PrivateRoute>} />
           <Route  path="product/:id" element={<PrivateRoute><ProductDetails /></PrivateRoute>} />

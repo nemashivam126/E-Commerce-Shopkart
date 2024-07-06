@@ -20,6 +20,7 @@ import getProductbyId from "./Redux/ProductSlice/getProductbyId";
 import fetchCart from "./Redux/CartSlice/fetchCart";
 import Orders from "./Redux/OrderSlice/Orders";
 import OrderStatus from "./Redux/OrderSlice/OrderStatus";
+import States from "./Redux/StatesSlice/States";
 
 const rootReducer = combineReducers({
     snackbar: snackbarSlice,
@@ -40,7 +41,8 @@ const rootReducer = combineReducers({
     selectedAddress: SelectedAddress,
     getUserCart: fetchCart,
     orders: Orders,
-    orderStatus: OrderStatus
+    orderStatus: OrderStatus,
+    shopkartStates: States,
 })
 
 const persistConfig = {
