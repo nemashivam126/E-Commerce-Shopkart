@@ -16,7 +16,7 @@ const UserOrdersList = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/shopkart/orders', {
+        const response = await axios.get('https://e-commerce-shopkart-backend.vercel.app/shopkart/orders', {
           headers: {
             Token: token
           }
@@ -48,7 +48,7 @@ const UserOrdersList = () => {
 
   const handleStatusChange = async (userId, itemId, newStatus) => {
     try {
-      await axios.put(`http://localhost:5000/shopkart/orders/${userId}/items/${itemId}`,
+      await axios.put(`https://e-commerce-shopkart-backend.vercel.app/shopkart/orders/${userId}/items/${itemId}`,
         { status: newStatus, estimatedDate: estimatedDates[itemId] },
         { headers: { Token: token } }
       );

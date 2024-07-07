@@ -75,7 +75,7 @@ export const ProductDetails = () => {
             return;
         }
         try {
-            const response = await axios.put(`http://localhost:5000/shopkart/user/${user.id}/addtocart`, cartdata, {
+            const response = await axios.put(`https://e-commerce-shopkart-backend.vercel.app/shopkart/user/${user.id}/addtocart`, cartdata, {
                 headers: {
                     Token: token
                 },

@@ -19,7 +19,7 @@ export const removeFromCartAsync = createAsyncThunk(
     const { token } = (getState()).auth;
     try {
       const response = await axios.delete(
-        `http://localhost:5000/shopkart/user/${userId}/remove-cart`,
+        `https://e-commerce-shopkart-backend.vercel.app/shopkart/user/${userId}/remove-cart`,
         {
           data: { productId }, // Send productId in request body
           headers: {

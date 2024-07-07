@@ -14,7 +14,7 @@ export const updateOrderStatusAsync = createAsyncThunk(
     try {
       const { token } = (getState()).auth;
       const response = await axios.put(
-        `http://localhost:5000/shopkart/orders/${userId}/items/${itemId}`,
+        `https://e-commerce-shopkart-backend.vercel.app/shopkart/orders/${userId}/items/${itemId}`,
         { status: newStatus },
         { headers: { Token: token } }
       );

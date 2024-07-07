@@ -8,7 +8,7 @@ export const fetchOrdersAsync = createAsyncThunk(
   async (userId, { getState, rejectWithValue }) => {
     const { token } = (getState()).auth;
     try {
-      const response = await axios.get(`http://localhost:5000/shopkart/user/${userId}/orders`, {
+      const response = await axios.get(`https://e-commerce-shopkart-backend.vercel.app/shopkart/user/${userId}/orders`, {
         headers: {
             Token: token
         }

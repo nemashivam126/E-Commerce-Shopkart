@@ -10,7 +10,7 @@ const initialState = {
 export const getProductByIdAsync = createAsyncThunk('products/getProduct', async (productId, { getState, dispatch }) => {
   const { token } = (getState()).auth;
   try {
-    const response = await axios.get(`http://localhost:5000/shopkart/products/${productId}`, {
+    const response = await axios.get(`https://e-commerce-shopkart-backend.vercel.app/shopkart/products/${productId}`, {
       headers: {
         Token: token,
       }
