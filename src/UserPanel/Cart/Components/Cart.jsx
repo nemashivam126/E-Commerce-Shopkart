@@ -17,6 +17,7 @@ const Cart = () => {
     const { token, user } = useSelector(state => state.auth);
     const [isEmpty, setIsEmpty] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [quantityLoading, setQuantityLoading] = useState(false);
     
     const fetchCart = async () => {
         try {
@@ -59,6 +60,7 @@ const Cart = () => {
 
     const updateCartQuantity = async (productId, quantity) => {
         try {
+            setQuantityLoading(true);
             const response = await axios.put(`https://e-commerce-shopkart-backend-rho.vercel.app/shopkart/user/${user.id}/updatecart`, {
                 productId,
                 quantity
@@ -82,6 +84,8 @@ const Cart = () => {
             setCart(detailedUpdatedCart);
         } catch (error) {
             console.error('Error updating cart quantity:', error);
+        } finally {
+            setQuantityLoading(false);
         }
     };
 
@@ -169,7 +173,7 @@ const Cart = () => {
                                         <IconButton onClick={() => handleIncrement(item.productId, item.quantity)} aria-label="Increase Quantity">
                                             <AddIcon color='primary' />
                                         </IconButton>
-                                        <Typography color={"green"} fontWeight={"bold"}>{item.quantity}</Typography>
+                                        <Typography color={"green"} fontWeight={"bold"}>{quantityLoading ? <CircularProgress size={15} /> : item.quantity}</Typography>
                                         <IconButton onClick={() => handleDecrement(item.productId, item.quantity)} aria-label="Decrease Quantity">
                                             <RemoveIcon color='primary' />
                                         </IconButton>

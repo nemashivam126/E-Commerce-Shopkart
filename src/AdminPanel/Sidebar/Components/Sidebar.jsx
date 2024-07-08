@@ -28,6 +28,7 @@ import { CircularProgress, MenuItem, Select } from '@mui/material';
 import ProfileMenu from '../../../Menu/Components/ProfileMenu';
 import AdminHomePage from '../../AdminHomePage/Components/AdminHomePage';
 import { ShoppingCart } from '@mui/icons-material';
+import { resetAdminData } from '../../../Redux/AccountDetailSlice/getAdminDetails';
 
 const drawerWidth = 240;
 
@@ -130,6 +131,7 @@ export default function Sidebar() {
     setIsLogout(true);
     try {
       dispatch(signOut());
+      dispatch(resetAdminData());
       localStorage.removeItem('token');
     } finally {
       setIsLogout(false);

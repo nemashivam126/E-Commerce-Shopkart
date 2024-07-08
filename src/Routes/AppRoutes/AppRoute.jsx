@@ -21,6 +21,7 @@ import MyOrders from "../../UserPanel/Orders/Components/MyOrders";
 import OrderStatus from "../../UserPanel/Orders/Components/OrderStatus";
 import UserOrdersList from "../../AdminPanel/UserOrdersList/UserOrdersList";
 import HomePage from "../../UserPanel/HomePage/Components/HomePage";
+import UpdateAccount from "../../UpdateAccountDetails/Components/UpdateAccount";
 
 export const AppRoutes = createBrowserRouter(
     createRoutesFromElements(
@@ -40,7 +41,8 @@ export const AppRoutes = createBrowserRouter(
           <Route  path="payment-details" element={<PrivateRoute><Payment /></PrivateRoute>} />
           <Route  path="order-confirmation" element={<PrivateRoute><OrderConfirmation /></PrivateRoute>} />
           <Route  path="my-orders" element={<PrivateRoute><MyOrders /></PrivateRoute>} />
-          <Route  path="/order-status/:itemId" element={<PrivateRoute><OrderStatus /></PrivateRoute>} />
+          <Route  path="order-status/:itemId" element={<PrivateRoute><OrderStatus /></PrivateRoute>} />
+          <Route  path="user-info/:id" element={<PrivateRoute><UpdateAccount /></PrivateRoute>} />
         </Route>
         {/* Admin Routes */}
         <Route path="/admin" element={<AdminRoute><Sidebar /></AdminRoute>} >
@@ -48,6 +50,7 @@ export const AppRoutes = createBrowserRouter(
           <Route  path="manage-products" element={<AdminRoute><ProductGrid /></AdminRoute>} />
           <Route  path="add-admin-account" element={<AdminRoute><AddAccount /></AdminRoute>} />
           <Route  path="user-orders" element={<AdminRoute><UserOrdersList /></AdminRoute>} />
+          <Route  path="admin-info/:id" element={<AdminRoute><UpdateAccount /></AdminRoute>} />
         </Route>
       </>
     )

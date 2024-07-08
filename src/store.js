@@ -21,6 +21,10 @@ import fetchCart from "./Redux/CartSlice/fetchCart";
 import Orders from "./Redux/OrderSlice/Orders";
 import OrderStatus from "./Redux/OrderSlice/OrderStatus";
 import States from "./Redux/StatesSlice/States";
+import getUserDetails from "./Redux/AccountDetailSlice/getUserDetails";
+import deleteAccount from "./Redux/AccountDetailSlice/deleteAccount";
+import deleteAdminAccount from "./Redux/AccountDetailSlice/deleteAdminAccount";
+import getAdminDetails from "./Redux/AccountDetailSlice/getAdminDetails";
 
 const rootReducer = combineReducers({
     snackbar: snackbarSlice,
@@ -43,6 +47,10 @@ const rootReducer = combineReducers({
     orders: Orders,
     orderStatus: OrderStatus,
     shopkartStates: States,
+    getUserDetails: getUserDetails,
+    deleteUserAccount: deleteAccount,
+    deleteAdminAccount: deleteAdminAccount,
+    getAdminDetails: getAdminDetails
 })
 
 const persistConfig = {

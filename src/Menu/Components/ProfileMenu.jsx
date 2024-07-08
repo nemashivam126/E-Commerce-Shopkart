@@ -17,17 +17,28 @@ import { signOut } from '../../Redux/AuthSlice/auth';
 import { useNavigate } from 'react-router-dom';
 import { resetOrders } from '../../Redux/OrderSlice/Orders';
 import { resetSelectedAddress } from '../../Redux/AddressSlice/SelectedAddress';
+import { resetUserData } from '../../Redux/AccountDetailSlice/getUserDetails';
+import { resetAdminData } from '../../Redux/AccountDetailSlice/getAdminDetails';
+import { Person } from '@mui/icons-material';
 
 export default function ProfileMenu() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {firstName, lastName, avatar, isAdmin} = useSelector(state => state.auth.user);
+  const {firstName, lastName, avatar, isAdmin, id} = useSelector(state => state.auth.user);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleAccountDetails = () => {
+    if(isAdmin) {
+      navigate(`/admin/admin-info/${id}`)
+    } else {
+      navigate(`/user-info/${id}`)
+    }
     setAnchorEl(null);
   };
   const handleAddAcc = () => {
@@ -40,6 +51,8 @@ export default function ProfileMenu() {
   const handleLogout = () => {
     dispatch(signOut());
     dispatch(resetSelectedAddress());
+    dispatch(resetAdminData());
+    dispatch(resetUserData());
     dispatch(resetOrders());
     localStorage.removeItem('token');
     setAnchorEl(null);
@@ -98,11 +111,11 @@ export default function ProfileMenu() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}>
+        {/* <MenuItem onClick={handleClose}>
           <Avatar /> Profile
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Avatar /> My account
+        </MenuItem> */}
+        <MenuItem onClick={handleAccountDetails}>
+          <Avatar style={{background: 'transparent'}}><Person color='info' /></Avatar> Profile
         </MenuItem>
         {!isAdmin && <MenuItem onClick={handleNavigate}>
           <Avatar sx={{bgcolor: 'transparent'}}><ReceiptLongIcon color='warning' /></Avatar> My Orders
