@@ -20,7 +20,7 @@ export const userSignUpAsync = createAsyncThunk(
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/shopkart/SignUp', formData, {
+      const response = await axios.post('https://e-commerce-shopkart-backend-rho.vercel.app/shopkart/SignUp', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

@@ -12,7 +12,7 @@ export const adminSignInAsync = createAsyncThunk(
   'adminAuth/adminSignIn',
   async (credentials, { rejectWithValue, dispatch }) => {
     try {
-      const response = await axios.post('https://e-commerce-shopkart-backend.vercel.app/shopkart/admin/SignIn', credentials);
+      const response = await axios.post('https://e-commerce-shopkart-backend-rho.vercel.app/shopkart/admin/SignIn', credentials);
       const { token, user } = response.data;
 
       // Update the shared auth state

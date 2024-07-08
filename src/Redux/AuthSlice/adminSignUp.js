@@ -22,7 +22,7 @@ export const adminSignUpAsync = createAsyncThunk(
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/shopkart/admin/SignUp', formData, {
+      const response = await axios.post('https://e-commerce-shopkart-backend-rho.vercel.app/shopkart/admin/SignUp', formData, {
         headers: {
           Token: token
         },

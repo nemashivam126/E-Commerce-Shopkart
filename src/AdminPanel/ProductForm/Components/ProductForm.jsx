@@ -59,9 +59,10 @@ function ProductForm({ isUpdate, initialProductData, handleClose }) {
             }
 
             try {
+                // http://localhost:5000
                 const response = await axios({
                     method: isUpdate ? 'put' : 'post',
-                    url: isUpdate ? `http://localhost:5000/shopkart/update-product/${initialProductData._id}` : 'http://localhost:5000/shopkart/add-product',
+                    url: isUpdate ? `https://e-commerce-shopkart-backend-rho.vercel.app/shopkart/update-product/${initialProductData._id}` : 'https://e-commerce-shopkart-backend-rho.vercel.app/shopkart/add-product',
                     data: formData,
                     headers: {
                         Token: token

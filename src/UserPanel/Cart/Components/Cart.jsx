@@ -20,7 +20,7 @@ const Cart = () => {
     
     const fetchCart = async () => {
         try {
-            const response = await axios.get(`https://e-commerce-shopkart-backend.vercel.app/shopkart/user/${user.id}/cart`, {
+            const response = await axios.get(`https://e-commerce-shopkart-backend-rho.vercel.app/shopkart/user/${user.id}/cart`, {
                 headers: {
                     Token: token
                 }
@@ -31,7 +31,7 @@ const Cart = () => {
 
             // Fetch product details for each item in the cart
             const detailedCart = await Promise.all(cartData.map(async (item) => {
-                const productResponse = await axios.get(`https://e-commerce-shopkart-backend.vercel.app/shopkart/products/${item.productId}`, {
+                const productResponse = await axios.get(`https://e-commerce-shopkart-backend-rho.vercel.app/shopkart/products/${item.productId}`, {
                     headers: {
                         Token: token
                     }
@@ -59,7 +59,7 @@ const Cart = () => {
 
     const updateCartQuantity = async (productId, quantity) => {
         try {
-            const response = await axios.put(`https://e-commerce-shopkart-backend.vercel.app/shopkart/user/${user.id}/updatecart`, {
+            const response = await axios.put(`https://e-commerce-shopkart-backend-rho.vercel.app/shopkart/user/${user.id}/updatecart`, {
                 productId,
                 quantity
             }, {
@@ -71,7 +71,7 @@ const Cart = () => {
             
             // Fetch product details for the updated cart
             const detailedUpdatedCart = await Promise.all(updatedCart.map(async (item) => {
-                const productResponse = await axios.get(`https://e-commerce-shopkart-backend.vercel.app/shopkart/products/${item.productId}`, {
+                const productResponse = await axios.get(`https://e-commerce-shopkart-backend-rho.vercel.app/shopkart/products/${item.productId}`, {
                     headers: {
                         Token: token
                     }

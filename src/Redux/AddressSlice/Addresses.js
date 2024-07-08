@@ -12,7 +12,7 @@ export const fetchAddresses = createAsyncThunk(
     'addresses/fetchAddresses',
     async (userId, { getState }) => {
         const { token } = getState().auth;
-        const response = await axios.get(`https://e-commerce-shopkart-backend.vercel.app/shopkart/user/${userId}/addresses`, {
+        const response = await axios.get(`https://e-commerce-shopkart-backend-rho.vercel.app/shopkart/user/${userId}/addresses`, {
             headers: {
                 Token: token
             }

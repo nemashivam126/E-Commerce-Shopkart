@@ -27,7 +27,7 @@ const MyOrders = () => {
       setDetailedLoading(true);
       const detailedOrdersPromises = orders.map(async (order) => {
         const itemsWithDetails = await Promise.all(order.items.map(async (item) => {
-          const productResponse = await axios.get(`https://e-commerce-shopkart-backend.vercel.app/shopkart/products/${item.productId}`, {
+          const productResponse = await axios.get(`https://e-commerce-shopkart-backend-rho.vercel.app/shopkart/products/${item.productId}`, {
             headers: {
               Token: token
             }

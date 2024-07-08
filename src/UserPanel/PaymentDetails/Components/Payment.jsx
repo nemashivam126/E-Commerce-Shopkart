@@ -50,7 +50,7 @@ const Payment = () => {
                 const totalAmount = orderItems.reduce((total, item) => total + item.amount, 0);
 
                 if(isBuyNow) {
-                    await axios.post(`https://e-commerce-shopkart-backend.vercel.app/shopkart/user/${user.id}/buynow`, {
+                    await axios.post(`https://e-commerce-shopkart-backend-rho.vercel.app/shopkart/user/${user.id}/buynow`, {
                         productId: buyNowData.productId,
                         quantity: buyNowData.quantity,
                         productSize: buyNowData.productSize,
@@ -63,7 +63,7 @@ const Payment = () => {
                         }
                     });
                 } else {
-                    await axios.post(`https://e-commerce-shopkart-backend.vercel.app/shopkart/user/${user.id}/orders`, {
+                    await axios.post(`https://e-commerce-shopkart-backend-rho.vercel.app/shopkart/user/${user.id}/orders`, {
                         items: orderItems,
                         totalAmount,
                         address: selectedAddress
@@ -76,7 +76,7 @@ const Payment = () => {
 
                 dispatch(getCartCountAsync(user.id));
                 // // Empty the cart
-                // await axios.delete(`https://e-commerce-shopkart-backend.vercel.app/shopkart/user/${user.id}/cart`, {
+                // await axios.delete(`https://e-commerce-shopkart-backend-rho.vercel.app/shopkart/user/${user.id}/cart`, {
                 //     headers: {
                 //         Token: token
                 //     }

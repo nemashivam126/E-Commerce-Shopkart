@@ -35,7 +35,7 @@ const AddressForm = () => {
   const { token, user } = useSelector(state => state.auth)
   const handleAddressSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      const response = await axios.post(`https://e-commerce-shopkart-backend.vercel.app/shopkart/user/${user.id}/add-address`, values, {
+      const response = await axios.post(`https://e-commerce-shopkart-backend-rho.vercel.app/shopkart/user/${user.id}/add-address`, values, {
         headers: {
           Token: token
         }

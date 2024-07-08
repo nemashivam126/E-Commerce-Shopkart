@@ -71,7 +71,7 @@ const OrderStatus = () => {
   useEffect(() => {
     const fetchOrderItem = async () => {
       try {
-        const response = await axios.get(`https://e-commerce-shopkart-backend.vercel.app/shopkart/order/${itemId}`, {
+        const response = await axios.get(`https://e-commerce-shopkart-backend-rho.vercel.app/shopkart/order/${itemId}`, {
           headers: {
             Token: token
           }
