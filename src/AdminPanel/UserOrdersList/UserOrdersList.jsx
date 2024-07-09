@@ -117,7 +117,7 @@ const UserOrdersList = () => {
             size='small'
             value={selectedUser}
             onChange={handleUserChange}
-            sx={{ minWidth: 200, bgcolor: 'lightgray' }}
+            sx={{ minWidth: 200, bgcolor: '#f2f3f4' }}
           >
             <MenuItem value="all">All Users</MenuItem>
             {users.map(user => (

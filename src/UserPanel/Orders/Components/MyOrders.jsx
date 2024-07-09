@@ -81,7 +81,7 @@ const MyOrders = () => {
           onChange={(e) => setFilter(e.target.value)}
           variant="outlined"
           size='small'
-          sx={{ minWidth: 200, bgcolor: 'lightgray' }}
+          sx={{ minWidth: 200, bgcolor: '#f2f3f4' }}
         >
           <MenuItem value="recent">Recent Orders</MenuItem>
           <MenuItem value="delivered">Delivered Orders</MenuItem>

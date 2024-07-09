@@ -3,8 +3,10 @@ import { Container, Typography, Grid, Paper, Box } from '@mui/material';
 import Footer from '../../Footer/Components/Footer';
 import { Category, ManageAccounts, ShoppingCart, TurnedIn } from '@mui/icons-material';
 import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const HomePage = () => {
+  const { user } = useSelector(state => state.auth);
   return (
     <Container maxWidth="lg" sx={{ pt: 3, pb: 8 }}>
       <section className="text-center mb-8">
@@ -41,7 +43,7 @@ const HomePage = () => {
               </Typography>
             </Paper>
           </Grid>
-          <Grid component={NavLink} to={'/'} item xs={12} md={6} my={2} mx={2} lg={4}>
+          <Grid component={NavLink} to={`/user-info/${user.id}`} item xs={12} md={6} my={2} mx={2} lg={4}>
             <Paper elevation={10} sx={{ borderRadius: '10px', p: 5 }}>
               <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333', mb: 2 }}>
                 <ManageAccounts /> Profile Settings

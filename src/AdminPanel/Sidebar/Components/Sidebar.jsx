@@ -172,7 +172,7 @@ export default function Sidebar() {
                 onChange={(e) => setFilter(e.target.value)}
                 variant="outlined"
                 size='small'
-                sx={{ minWidth: 200, bgcolor: 'lightgray', mr:2 }}
+                sx={{ minWidth: 200, bgcolor: '#f2f3f4', mr:2 }}
               >
                 <MenuItem value="recent">Recent Orders</MenuItem>
                 <MenuItem value="delivered">Delivered Orders</MenuItem>
