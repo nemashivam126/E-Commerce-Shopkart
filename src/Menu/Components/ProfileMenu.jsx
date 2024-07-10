@@ -20,6 +20,7 @@ import { resetSelectedAddress } from '../../Redux/AddressSlice/SelectedAddress';
 import { resetUserData } from '../../Redux/AccountDetailSlice/getUserDetails';
 import { resetAdminData } from '../../Redux/AccountDetailSlice/getAdminDetails';
 import { Person } from '@mui/icons-material';
+import { resetAddresses } from '../../Redux/AddressSlice/Addresses';
 
 export default function ProfileMenu() {
   const dispatch = useDispatch();
@@ -51,6 +52,7 @@ export default function ProfileMenu() {
   const handleLogout = () => {
     dispatch(signOut());
     dispatch(resetSelectedAddress());
+    dispatch(resetAddresses());
     dispatch(resetAdminData());
     dispatch(resetUserData());
     dispatch(resetOrders());

@@ -15,6 +15,7 @@ const Cart = () => {
     const dispatch = useDispatch();
     const [cart, setCart] = useState([]);
     const { token, user } = useSelector(state => state.auth);
+    const { status: removeStatus } = useSelector(state => state.removeCart);
     const [isEmpty, setIsEmpty] = useState(false);
     const [loading, setLoading] = useState(true);
     const [quantityLoading, setQuantityLoading] = useState(false);
@@ -182,9 +183,14 @@ const Cart = () => {
                                 <Grid item xs={2} sx={{ textAlign: 'center' }}>
                                     <Typography variant="body1">Remove Product</Typography>
                                     <Box sx={{ mt: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                        <IconButton onClick={() => handleRemoveFromCart(user.id, item.productId)} aria-label="Remove from Cart">
-                                            <DeleteIcon color='error' />
-                                        </IconButton>
+                                        { removeStatus === 'loading' ?
+                                             <IconButton>
+                                                <CircularProgress color='error' size={20} />
+                                             </IconButton> :
+                                            <IconButton onClick={() => handleRemoveFromCart(user.id, item.productId)} aria-label="Remove from Cart">
+                                                <DeleteIcon color='error' />
+                                            </IconButton>
+                                        }
                                     </Box>
                                 </Grid>
                             </Grid>

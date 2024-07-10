@@ -24,7 +24,13 @@ export const fetchAddresses = createAsyncThunk(
 const addressesSlice = createSlice({
     name: 'addresses',
     initialState,
-    reducers: {},
+    reducers: {
+        resetAddresses : (state) => {
+            state.addresses = [],
+            state.error = null,
+            state.loading = false
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchAddresses.pending, (state) => {
@@ -42,4 +48,5 @@ const addressesSlice = createSlice({
     },
 });
 
+export const { resetAddresses } = addressesSlice.actions;
 export default addressesSlice.reducer;

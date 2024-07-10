@@ -22,7 +22,8 @@ const Checkout = () => {
                             Selected Address
                         </Typography>
                         <Typography variant="body1">{selectedAddress.label}</Typography>
-                        <Typography variant="body2">{selectedAddress.street}, {selectedAddress.city}</Typography>
+                        <Typography variant="body1">{selectedAddress.houseNo}</Typography>
+                        <Typography variant="body2">{selectedAddress?.landmark && selectedAddress?.landmark}, {selectedAddress.street}, {selectedAddress.city}</Typography>
                         <Typography variant="body2">{selectedAddress.state}, {selectedAddress.pincode}</Typography>
                     </Paper>
                 ) : (
@@ -30,13 +31,24 @@ const Checkout = () => {
                         No address selected.
                     </Typography>
                 )}
-                <Grid container justifyContent="center">
+                <Grid display={'flex'}>
                     <Button
+                        fullWidth
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => navigate('/user-address')}
+                        disabled={!selectedAddress}
+                        sx={{ mr: 0.5 }}
+                    >
+                        Change Address
+                    </Button>
+                    <Button
+                        fullWidth
                         variant="contained"
                         color="primary"
                         onClick={handleProceedToPay}
                         disabled={!selectedAddress}
-                        sx={{ mt: 2, width: '100%' }}
+                        sx={{ ml: 0.5 }}
                     >
                         Proceed to Pay
                     </Button>

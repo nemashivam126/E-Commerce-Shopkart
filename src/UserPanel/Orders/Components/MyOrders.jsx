@@ -184,8 +184,10 @@ const MyOrders = () => {
                             Selected Address
                           </Typography>
                           <Typography variant="body1">{order.address.label}</Typography>
-                          <Typography variant="body2">{order.address.street}, {order.address.city}</Typography>
-                          <Typography variant="body2">{order.address.state}, {order.address.pincode}</Typography>
+                          <Typography variant="body1">{order.address.houseNo}</Typography>
+                          <Typography variant="body1">{order.address?.landmark && order.address?.landmark}</Typography>
+                          <Typography variant="body1">{order.address.street}, {order.address.city}</Typography>
+                          <Typography variant="body1">{order.address.state}, {order.address.pincode}</Typography>
                         </Paper>
                       </Grid>
                     )}

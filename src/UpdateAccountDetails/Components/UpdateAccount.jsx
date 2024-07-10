@@ -18,10 +18,6 @@ import {
   FormControl,
   Select,
   MenuItem,
-  CircularProgress,
-  Backdrop,
-  Fade,
-  Modal,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -34,6 +30,7 @@ import { addSnackbarState } from '../../Redux/Snackbar/SnackbarSlice';
 import { deleteUserAccountAsync } from '../../Redux/AccountDetailSlice/deleteAccount';
 import { getAdminDetailsAsync } from '../../Redux/AccountDetailSlice/getAdminDetails';
 import { deleteAdminAccountAsync } from '../../Redux/AccountDetailSlice/deleteAdminAccount';
+import Loader from '../../Loader/Components/Loader';
 
 const UpdateAccount = () => {
   const dispatch = useDispatch();
@@ -351,28 +348,7 @@ const UpdateAccount = () => {
         </Box>
 
         {/* Loader backdrop */}
-        <Backdrop
-          sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, color: '#fff', backgroundColor: 'rgba(0, 0, 0, 0.8)' }}
-          open={loadingModalOpen}
-        >
-          <Fade in={loadingModalOpen}>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'column',
-                backgroundColor: 'transparent',
-                // boxShadow: 3,
-                borderRadius: 2,
-                p: 3,
-              }}
-            >
-              <CircularProgress size={70}/>
-              <Typography mt={2}>Updating...</Typography>
-            </Box>
-          </Fade>
-        </Backdrop>
+        <Loader loading={loadingModalOpen} text={'Updating...'} />
 
         {/* Delete confirmation dialog */}
         <Dialog

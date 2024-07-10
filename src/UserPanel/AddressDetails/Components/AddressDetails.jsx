@@ -1,12 +1,14 @@
 import { Edit, LocationOff } from "@mui/icons-material";
-import { Alert, Box, Button, Checkbox, Container, Grid, IconButton, Paper, Typography } from "@mui/material";
-import { useEffect } from "react";
+import { Alert, Box, Button, Checkbox, Container, Dialog, Grid, IconButton, Paper, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addSnackbarState } from "../../../Redux/Snackbar/SnackbarSlice";
 import { fetchAddresses } from "../../../Redux/AddressSlice/Addresses";
 import { selectAddress, setSelectedAddress } from "../../../Redux/AddressSlice/SelectedAddress";
 import { setBuyNowData } from "../../../Redux/StatesSlice/States";
+import AddressForm from "../../AddressForm/Components/AddressForm";
+import Loader from "../../../Loader/Components/Loader";
 
 const AddressDetails = () => {
     const dispatch = useDispatch();
@@ -15,6 +17,7 @@ const AddressDetails = () => {
     const { addresses, loading, error } = useSelector(state => state.addresses);
     const { selectedAddress } = useSelector(state => state.selectedAddress);
     const { buyNowData } = useSelector(state => state.shopkartStates);
+    const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
         dispatch(fetchAddresses(user.id));
@@ -57,16 +60,28 @@ const AddressDetails = () => {
         }
     };
 
+    const handleEditAddress = (addressId) => {
+        const selected = addresses.find(address => address._id === addressId);
+        dispatch(setSelectedAddress(selected));
+        setOpenModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setOpenModal(false);
+        dispatch(fetchAddresses(user.id));
+    };
+
     return (
         <Container maxWidth={"md"}>
             <Box px={10} py={2}>
                 <Typography textAlign={'center'} variant="h5" gutterBottom sx={{ mt: 2, mb:2 }}>
                     Your Addresses
                 </Typography>
-                {loading && <Typography>Loading addresses...</Typography>}
+                {/* loader */}
+                <Loader loading={loading} text={'Updating...'} />
                 {error && <Typography color="error">Error: {error}</Typography>}
                 {
-                    addresses.length === 0 ? (
+                    !loading && addresses.length === 0 ? (
                         <Box display="flex" alignItems="center" justifyContent="center" flexDirection="column" mt={2}>
                             <LocationOff color="disabled" sx={{ fontSize: 80, marginBottom: 2 }} />
                             <Alert severity="info" sx={{ textAlign: "center" }}>
@@ -88,11 +103,12 @@ const AddressDetails = () => {
                                         <Typography fontWeight={700}>{address.label}</Typography>
                                     </Grid>
                                     <Grid item xs={10}>
-                                        <Typography variant="subtitle1">{address.street}, {address.city}</Typography>
+                                        <Typography variant="body1">{address.houseNo}</Typography>
+                                        <Typography variant="subtitle1">{address?.landmark && address?.landmark}, {address.street}, {address.city}</Typography>
                                         <Typography variant="body2" color="textSecondary">{address.state}, {address.pincode}</Typography>
                                     </Grid>
                                     <Grid item xs={2} sx={{ textAlign: 'center' }}>
-                                        <IconButton onClick={() => navigate(`/update-address/${address._id}`)} aria-label="Edit Address">
+                                        <IconButton onClick={() => handleEditAddress(address._id)} aria-label="Edit Address">
                                             <Edit color='primary' />
                                         </IconButton>
                                     </Grid>
@@ -101,14 +117,21 @@ const AddressDetails = () => {
                         </Grid>
                     )))
                 }
-                <Box sx={{textAlign:'center', mt: 2}}>
-                    {addresses.length !== 0 && <Button onClick={handleAddOrUpdateAddress} variant="contained" color="primary" sx={{ mt: 2 }}>
+                <Box sx={{textAlign:'center', mt: 2, display: 'flex', justifyContent: 'center'}}>
+                    {addresses.length !== 0 && <Button fullWidth onClick={handleAddOrUpdateAddress} variant="outlined" color="primary" sx={{ mr: 1 }}>
                         Add Address
                     </Button>}
-                    <Button onClick={handleCheckout} variant="contained" color="primary" sx={{ mt: 2, ml: 1 }}>
+                    {!loading && <Button fullWidth={addresses.length === 0 ? false : true} onClick={handleCheckout} variant="contained" color="primary" sx={{ ml: 1 }}>
                         {addresses.length === 0 ? "Add Address" : "Use This Address"}
-                    </Button>
+                    </Button>}
                 </Box>
+                 {/* Dialog box for Edit Address */}
+                 <Dialog
+                    open={openModal}
+                    onClose={handleCloseModal}
+                >
+                    <Box><AddressForm isEdit={true} editAddressValues={selectedAddress} onClose={handleCloseModal} /></Box>
+                </Dialog>
             </Box>
         </Container>
     );

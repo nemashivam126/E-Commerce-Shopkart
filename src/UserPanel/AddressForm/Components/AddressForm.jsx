@@ -29,13 +29,18 @@ const initialValues = {
   country: ''
 };
 
-const AddressForm = () => {
+const AddressForm = ({isEdit = false, editAddressValues = {}, onClose}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token, user } = useSelector(state => state.auth)
   const handleAddressSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      const response = await axios.post(`https://e-commerce-shopkart-backend-rho.vercel.app/shopkart/user/${user.id}/add-address`, values, {
+      const url = isEdit ? `https://e-commerce-shopkart-backend-rho.vercel.app/shopkart/user/${user.id}/addresses/${editAddressValues._id}` : `https://e-commerce-shopkart-backend-rho.vercel.app/shopkart/user/${user.id}/add-address`;
+      const method = isEdit ? 'PUT' : 'POST';
+      const response = await axios({
+        method: method,
+        url: url,
+        data: values,
         headers: {
           Token: token
         }
@@ -45,11 +50,11 @@ const AddressForm = () => {
       dispatch(
         addSnackbarState({
           snackbarOpen: true,
-          snackbarMessage: 'Address added successfully!',
+          snackbarMessage: isEdit ? 'Address updated successfully!' : 'Address added successfully!',
           snackbarSeverity: "success",
         })
       );
-      navigate('/user-address')
+      isEdit ? onClose() : navigate('/user-address')
       return response.data;
     } catch (error) {
       console.error('Error adding address:', error);
@@ -64,7 +69,7 @@ const AddressForm = () => {
       setSubmitting(false);
     }
   };
-
+console.log();
   return (
     <Paper
       elevation={3}
@@ -77,10 +82,10 @@ const AddressForm = () => {
       }}
     >
       <Typography variant="h4" gutterBottom align="center">
-        Add New Address
+        {isEdit ? 'Update Address' : 'Add New Address'}
       </Typography>
       <Formik
-        initialValues={initialValues}
+        initialValues={isEdit ? editAddressValues : initialValues}
         validationSchema={validationSchema}
         onSubmit={handleAddressSubmit}
       >
@@ -201,8 +206,8 @@ const AddressForm = () => {
               </Grid>
               <Grid item xs={12}>
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                  <Button type="submit" variant="contained" color="primary" disabled={isSubmitting} size="large">
-                    Submit
+                  <Button fullWidth type="submit" variant="contained" color="primary" disabled={isSubmitting} size="large">
+                    {isEdit ? 'Update' : 'Submit'}
                   </Button>
                 </Box>
               </Grid>
