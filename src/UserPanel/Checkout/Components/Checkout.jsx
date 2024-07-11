@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 const Checkout = () => {
     const navigate = useNavigate();
     const { selectedAddress } = useSelector(state => state.selectedAddress);
+    const AppTheme = useSelector((state) => state.theme.theme);
 
     const handleProceedToPay = () => {
         navigate('/payment-details');
@@ -17,7 +18,7 @@ const Checkout = () => {
                     Checkout
                 </Typography>
                 {selectedAddress ? (
-                    <Paper variant="outlined" sx={{ padding: 2, mb: 4, borderRadius: 2 }}>
+                    <Paper variant="outlined" sx={{ padding: 2, mb: 4, borderRadius: 2, bgcolor: 'transparent' }}>
                         <Typography variant="h6" fontWeight="bold" gutterBottom>
                             Selected Address
                         </Typography>
@@ -34,7 +35,7 @@ const Checkout = () => {
                 <Grid display={'flex'}>
                     <Button
                         fullWidth
-                        variant="outlined"
+                        variant={AppTheme === 'Dark' ? "contained" : "outlined"}
                         color="primary"
                         onClick={() => navigate('/user-address')}
                         disabled={!selectedAddress}

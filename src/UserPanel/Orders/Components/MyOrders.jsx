@@ -6,6 +6,7 @@ import axios from 'axios';
 import { fetchOrdersAsync } from '../../../Redux/OrderSlice/Orders';
 import { shortenDescription } from '../../Utils/shortDescription';
 import { SentimentVeryDissatisfied } from '@mui/icons-material';
+import CustomTheme from '../../../Theme/CustomTheme/CustomTheme';
 
 const MyOrders = () => {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ const MyOrders = () => {
   const [detailedOrders, setDetailedOrders] = useState([]);
   const [detailedLoading, setDetailedLoading] = useState(true);
   const [filter, setFilter] = useState('ongoing'); // Default filter
+  const AppTheme = useSelector((state) => state.theme.theme);
 
   useEffect(() => {
     if (user.id) {
@@ -71,7 +73,7 @@ const MyOrders = () => {
   }
 
   return (
-    <Box sx={{ px: 4, py: 2, height: '85vh', overflow: 'auto' }}>
+    <Box sx={{ px: 4, py: 2, height: '85vh' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
         <Typography variant="h5" fontWeight={600} textTransform={'uppercase'} color={'brown'}>
           Your Orders
@@ -81,7 +83,7 @@ const MyOrders = () => {
           onChange={(e) => setFilter(e.target.value)}
           variant="outlined"
           size='small'
-          sx={{ minWidth: 200, bgcolor: '#f2f3f4' }}
+          sx={{ minWidth: 200, bgcolor: CustomTheme.CustomColor[AppTheme].light }}
         >
           <MenuItem value="recent">Recent Orders</MenuItem>
           <MenuItem value="delivered">Delivered Orders</MenuItem>
@@ -89,7 +91,7 @@ const MyOrders = () => {
           <MenuItem value="ongoing">Current Orders</MenuItem>
         </Select>
       </Box>
-      <Grid container spacing={5} sx={{ maxHeight: '85vh', overflowY: 'auto' }}>
+      <Grid container spacing={7} sx={{ maxHeight: '85vh', overflowY: 'auto' }}>
         {detailedOrders.length === 0 ? (
           <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '70vh', width: '100%' }}>
           <SentimentVeryDissatisfied color="error" sx={{ fontSize: 100, mb: 2 }} />
@@ -178,8 +180,8 @@ const MyOrders = () => {
                       ))}
                     </Grid>
                     {order.address && (
-                      <Grid item xs={12} md={4} display={'flex'} justifyContent={"center"} alignItems={"center"}>
-                        <Paper variant="outlined" sx={{ padding: 3, borderRadius: 2 }}>
+                      <Grid item xs={12} md={4} display={'flex'} justifyContent={"center"} alignItems={"center"} position={'relative'}>
+                        <Paper variant="outlined" sx={{ padding: 3, borderRadius: 2, position:'absolute', bottom:0 }}>
                           <Typography variant="h6" fontWeight="bold" gutterBottom>
                             Selected Address
                           </Typography>

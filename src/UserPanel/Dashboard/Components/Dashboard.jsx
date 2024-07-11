@@ -4,7 +4,7 @@ import ResponsiveAppBar from "../../AppBar/Components/Appbar"
 const Dashboard = () => {
   return (
     <div>
-      <div className="mb-20"><ResponsiveAppBar /></div>
+      <div className="mb-20 overflow-hidden"><ResponsiveAppBar /></div>
       <Outlet />
     </div>
   )

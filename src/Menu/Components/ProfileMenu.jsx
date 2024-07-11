@@ -19,14 +19,16 @@ import { resetOrders } from '../../Redux/OrderSlice/Orders';
 import { resetSelectedAddress } from '../../Redux/AddressSlice/SelectedAddress';
 import { resetUserData } from '../../Redux/AccountDetailSlice/getUserDetails';
 import { resetAdminData } from '../../Redux/AccountDetailSlice/getAdminDetails';
-import { Person } from '@mui/icons-material';
+import { Contrast, Person } from '@mui/icons-material';
 import { resetAddresses } from '../../Redux/AddressSlice/Addresses';
+import ThemeSelector from '../../Theme/Components/ThemeSelector/ThemeSelector';
 
 export default function ProfileMenu() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {firstName, lastName, avatar, isAdmin, id} = useSelector(state => state.auth.user);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [flag, setFlag] = useState(false);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -59,6 +61,12 @@ export default function ProfileMenu() {
     localStorage.removeItem('token');
     setAnchorEl(null);
   };
+  const handleClickOpen = () => {
+    setFlag(true);
+  }
+  const handleClickClose = () => {
+    setFlag(false);
+  }
   return (
     <>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -117,15 +125,24 @@ export default function ProfileMenu() {
           <Avatar /> Profile
         </MenuItem> */}
         <MenuItem onClick={handleAccountDetails}>
-          <Avatar style={{background: 'transparent'}}><Person color='info' /></Avatar> Profile
+          <Avatar style={{background: 'transparent'}}><Person color='primary' /></Avatar> Profile
+        </MenuItem>
+        <MenuItem onClick={handleClickOpen}>
+          <ListItemIcon>
+            <Avatar sx={{bgcolor: 'transparent'}}><Contrast color='primary'/></Avatar>
+          </ListItemIcon>
+          Change Theme
         </MenuItem>
         {!isAdmin && <MenuItem onClick={handleNavigate}>
-          <Avatar sx={{bgcolor: 'transparent'}}><ReceiptLongIcon color='warning' /></Avatar> My Orders
+          <ListItemIcon>
+          <Avatar sx={{bgcolor: 'transparent'}}><ReceiptLongIcon color='primary' /></Avatar>
+          </ListItemIcon>
+          My Orders
         </MenuItem>}
         <Divider />
         {isAdmin && <MenuItem onClick={handleAddAcc}>
           <ListItemIcon>
-            <PersonAdd fontSize="small" />
+            <Avatar sx={{bgcolor: 'transparent'}}><PersonAdd color='primary' /></Avatar>
           </ListItemIcon>
           Add another account
         </MenuItem>}
@@ -142,6 +159,7 @@ export default function ProfileMenu() {
           Logout
         </MenuItem>
       </Menu>
+      <ThemeSelector menuOpen={flag} handleClose={handleClickClose}/>
     </>
   );
 }

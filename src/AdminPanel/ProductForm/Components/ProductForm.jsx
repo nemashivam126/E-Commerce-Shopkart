@@ -141,13 +141,13 @@ function ProductForm({ isUpdate, initialProductData, handleClose }) {
     };
 
     return (
-        <div className="p-4 bg-white rounded shadow-md">
+        <div className="p-4 shadow-2xl">
             {loader && (
                 <div className="absolute inset-0 flex items-center justify-center bg-gray-200 bg-opacity-75 z-10">
                     <CircularProgress size={70} />
                 </div>
             )}
-            <h1 className="text-2xl font-semibold text-gray-900 mb-4">{isUpdate ? 'Update Product' : 'Add Product'}</h1>
+            <h1 className="text-2xl font-semibold mb-4">{isUpdate ? 'Update Product' : 'Add Product'}</h1>
             <form key={formKey} onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>

@@ -24,6 +24,7 @@ import { userSignUpAsync } from '../../../Redux/AuthSlice/userSignUp';
 import { Link } from 'react-router-dom';
 import { adminSignUpAsync } from '../../../Redux/AuthSlice/adminSignUp';
 import LoginBg from '../../../assets/LoginBg.jpg';
+import CustomTheme from '../../../Theme/CustomTheme/CustomTheme';
 
 const SignUpUser = () => {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ const SignUpUser = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [image, setImage] = useState(null);
+  const AppTheme = useSelector((state) => state.theme.theme);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -106,7 +108,7 @@ const SignUpUser = () => {
           boxShadow: 3,
           p: 3,
           borderRadius: 2,
-          background: 'white'
+          background: AppTheme === 'Dark' ? '#242424' : 'white'
         }}
       >
         {/* <Avatar src={image} sx={{ width: 80, height: 80, mb: 2 }} /> */}
@@ -123,8 +125,8 @@ const SignUpUser = () => {
               position: 'absolute',
               bottom: 0,
               right: 0,
-              backgroundColor: 'white',
-              '&:hover': { backgroundColor: 'white' },
+              backgroundColor: AppTheme === 'Dark' ? '#242424' : 'white',
+              '&:hover': { backgroundColor: CustomTheme.CustomColor[AppTheme].light },
             }}
           >
             <Edit fontSize='small' />
@@ -138,7 +140,7 @@ const SignUpUser = () => {
             />
           </IconButton>
         </Box>
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h4" color={AppTheme === 'Dark' ? 'whitesmoke' : 'inherit'} gutterBottom>
           {user === null ? 'Sign Up' : 'Add Admin'}
         </Typography>
         <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ mt: 1 }}>
@@ -277,7 +279,7 @@ const SignUpUser = () => {
           </Button>
           {/* {status === 'failed' && <Typography color="error">{error}</Typography>} */}
         </Box>
-        {user === null && <Link to={'/login'}><span className='flex justify-center text-[13px]'>Already have an account? <span className='text-[#1976d2] font-bold ml-1'>Signin</span></span></Link>}
+        {user === null && <Link to={'/login'}><span className='flex justify-center text-[13px]'  style={AppTheme === 'Dark' ? {color: 'white'} : {}}>Already have an account? <span className='font-bold ml-1' style={{ color: AppTheme === 'Dark' ? CustomTheme.CustomColor[AppTheme].light : CustomTheme.CustomColor[AppTheme].main }} >Signin</span></span></Link>}
       </Box>
     </Container>
   );

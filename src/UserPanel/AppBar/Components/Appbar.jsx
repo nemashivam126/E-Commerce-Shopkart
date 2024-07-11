@@ -20,6 +20,8 @@ import { setSearchTerm } from '../../../Redux/SearchTermSlice/SearchTerm';
 import { signOut } from '../../../Redux/AuthSlice/auth';
 import { getCartCountAsync } from '../../../Redux/CartSlice/cartCount';
 import ProfileMenu from '../../../Menu/Components/ProfileMenu';
+import CustomTheme from '../../../Theme/CustomTheme/CustomTheme';
+import DarkModeToggleButton from '../../../DarkModeToggle/Components/DarkModeToggleButton';
 
 function ResponsiveAppBar() {
   const dispatch = useDispatch();
@@ -29,6 +31,7 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [searchInput, setSearchInput] = useState('');
+  const AppTheme = useSelector((state) => state.theme.theme);
   const pages = [
     { text: "Products", path: '/products' },
     // { text: "Cart", path: '/cart' },
@@ -82,11 +85,11 @@ function ResponsiveAppBar() {
               alignItems: 'center',
               fontFamily: 'monospace',
               fontWeight: 700,
-              color: 'inherit',
+              color: AppTheme === "Dark" ? CustomTheme.CustomColor.Common.dullWhite : CustomTheme.CustomColor[AppTheme].light,
               textDecoration: 'none',
               "&.active": {
-                fontWeight: '700',
-                color:'success.light'
+                fontWeight: 700,
+                color: 'white'
               }
             }}
           >
@@ -155,10 +158,10 @@ function ResponsiveAppBar() {
                 LinkComponent={NavLink}
                 to={page.path}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block', textTransform:'none', 
+                sx={{ my: 2, fontWeight: 700, color: AppTheme === "Dark" ? CustomTheme.CustomColor.Common.dullWhite : CustomTheme.CustomColor[AppTheme].light, display: 'block', textTransform:'none', 
                       "&.active": {
                         fontWeight: '700',
-                        color:'success.light'
+                        color:'white'
                       }, 
                     }}
               >
@@ -178,15 +181,18 @@ function ResponsiveAppBar() {
               <SearchIcon />
             </IconButton>
           </Paper>
-          <IconButton sx={{fontSize: '16px', mr: 2, "&.active": {
+            <IconButton sx={{fontSize: '16px', mr: 2, fontWeight: 700, color: AppTheme === "Dark" ? CustomTheme.CustomColor.Common.dullWhite : CustomTheme.CustomColor[AppTheme].light, "&.active": {
                         fontWeight: '700',
-                        color:'success.light'
-                      }, }} LinkComponent={NavLink} to="/cart" color="inherit">
+                        color:'white'
+                      }, "&.MuiButtonBase-root:hover": {
+                            bgcolor: 'transparent' }, 
+            }} LinkComponent={NavLink} to="/cart" color="inherit">
             <span className='mb-[5px]'>Cart</span>
-            <Badge badgeContent={cartCount} color="error">
+            <Badge badgeContent={cartCount} color={AppTheme === "Error" ? "secondary" : "error"}>
               <ShoppingCartIcon />
             </Badge>
           </IconButton>
+          <Box sx={{mx:1}}><DarkModeToggleButton /></Box>
           <Box sx={{ flexGrow: 0 }}>
             <ProfileMenu />
           </Box>

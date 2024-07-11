@@ -26,6 +26,7 @@ export const ProductDetails = () => {
     const [selectedColor, setSelectedColor] = useState('');
     const [quantity, setQuantity] = useState(1);
     const navigate = useNavigate();
+    const AppTheme = useSelector((state) => state.theme.theme);
     const message = "In Stock";
     const imgHover = (e) => {
         setShowImg(e.target.src)
@@ -159,7 +160,7 @@ export const ProductDetails = () => {
                             </div>
                         </div>
                         <div className="w-full sm:w-4/12 mb-3 mr-12 sm:mb-0" >
-                            <div className="bg-white">
+                            <div>
                                 <div className="relative p-4 z-50" >
                                     {/* <ReactImageMagnify {...{
                                         smallImage: {
@@ -184,12 +185,12 @@ export const ProductDetails = () => {
                             </div>
                         </div>
                         <div className="w-full sm:w-5/12">
-                            <div className="bg-white text-black mt-3 p-2" style={{boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px'}}>
+                            <div className="mt-3 p-2" style={{boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px', backgroundColor: AppTheme === 'Dark' ? 'transparent' : 'white', color: AppTheme === 'Dark' ? 'white' : ''}}>
                                 <div className="p-4">
-                                    <h5 className="text-3xl text-gray-700 font-bold">{product.title}</h5>
-                                    <h5 className="text-gray-700 font-medium italic mb-2">{product.genericName}</h5>
+                                    <h5 className={`text-3xl ${AppTheme === 'Dark' ? 'text-gray-200' : 'text-gray-700'} font-bold`}>{product.title}</h5>
+                                    <h5 className={`${AppTheme === 'Dark' ? 'text-gray-200' : 'text-gray-700'} font-medium italic mb-2`}>{product.genericName}</h5>
                                     <span className="flex items-center">
-                                        <h4 className="text-2xl text-gray-700 font-bold mr-3">₹{product.price}</h4>
+                                        <h4 className={`text-2xl ${AppTheme === 'Dark' ? 'text-gray-200' : 'text-gray-700'} font-bold mr-3`}>₹{product.price}</h4>
                                         <b className="text-green-700">{product.discount} off</b>
                                     </span>
                                     <p className="text-[12px] mb-4">MRP incl. of all taxes</p>

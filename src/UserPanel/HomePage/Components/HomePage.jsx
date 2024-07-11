@@ -7,10 +7,12 @@ import { useSelector } from 'react-redux';
 
 const HomePage = () => {
   const { user } = useSelector(state => state.auth);
+  const AppTheme = useSelector((state) => state.theme.theme);
+  
   return (
     <Container maxWidth="lg" sx={{ pt: 3, pb: 8 }}>
       <section className="text-center mb-8">
-        <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#333' }}>
+        <Typography variant="h3" sx={{ fontWeight: 'bold', color: AppTheme === 'Dark' ? 'whitesmoke' : '' }}>
           Welcome to ShopKart
         </Typography>
         <Typography variant="h6" sx={{ color: '#777', mt: 1 }}>
@@ -25,7 +27,7 @@ const HomePage = () => {
         <Grid container spacing={3} justifyContent="center">
           <Grid component={NavLink} to={'/products'} item xs={12} md={6} my={2} mx={2} lg={4}>
             <Paper elevation={10} sx={{ borderRadius: '10px', p: 5 }}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333', mb: 2 }}>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
               <Category /> View Products
               </Typography>
               <Typography variant="body2" sx={{ color: '#777' }}>
@@ -35,7 +37,7 @@ const HomePage = () => {
           </Grid>
           <Grid component={NavLink} to={'/my-orders'} item xs={12} md={6} my={2} mx={2} lg={4}>
             <Paper elevation={10} sx={{ borderRadius: '10px', p: 5 }}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333', mb: 2 }}>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
                 <TurnedIn /> My Orders
               </Typography>
               <Typography variant="body2" sx={{ color: '#777' }}>
@@ -45,7 +47,7 @@ const HomePage = () => {
           </Grid>
           <Grid component={NavLink} to={`/user-info/${user.id}`} item xs={12} md={6} my={2} mx={2} lg={4}>
             <Paper elevation={10} sx={{ borderRadius: '10px', p: 5 }}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333', mb: 2 }}>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
                 <ManageAccounts /> Profile Settings
               </Typography>
               <Typography variant="body2" sx={{ color: '#777' }}>
@@ -55,7 +57,7 @@ const HomePage = () => {
           </Grid>
           <Grid component={NavLink} to={'/cart'} item xs={12} md={6} my={2} mx={2} lg={4}>
             <Paper elevation={10} sx={{ borderRadius: '10px', p: 5 }}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333', mb: 2 }}>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
               <ShoppingCart /> View Cart
               </Typography>
               <Typography variant="body2" sx={{ color: '#777' }}>

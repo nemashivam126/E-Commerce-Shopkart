@@ -19,6 +19,7 @@ const Cart = () => {
     const [isEmpty, setIsEmpty] = useState(false);
     const [loading, setLoading] = useState(true);
     const [quantityLoading, setQuantityLoading] = useState(false);
+    const AppTheme = useSelector((state) => state.theme.theme);
     
     const fetchCart = async () => {
         try {
@@ -144,7 +145,7 @@ const Cart = () => {
     return (
         <Grid container px={4} py={1} spacing={2} maxHeight={'85vh'} overflow={'auto'}>
             <Grid item xs={8} mb={1}>
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h5" color={AppTheme === 'Dark' ? 'whitesmoke' : 'inherit'} gutterBottom>
                     Your Shopping Cart
                 </Typography>
                 {cart.map(item => (
@@ -199,9 +200,9 @@ const Cart = () => {
                 ))}
             </Grid>
             <Grid item xs={4} height={'auto'} sx={{ mt: 3, mb:1 }}>
-                <Paper elevation={3} sx={{ padding: 3, width: '100%', textAlign: 'center', backgroundColor: '#f5f5f5', borderRadius: '10px' }}>
+                <Paper elevation={3} sx={{ padding: 3, width: '100%', textAlign: 'center', borderRadius: '10px' }}>
                     <Typography variant="h6" sx={{ mb: 2 }}>Total Price</Typography>
-                    <Typography variant="h4" color="primary" sx={{ mb: 3 }}>₹{totalPrice.toFixed(2)}</Typography>
+                    <Typography variant="h4" sx={{ mb: 3 }}>₹{totalPrice.toFixed(2)}</Typography>
                     <Button component={Link} to="/user-address" variant="contained" color="primary" size="large" sx={{ width: '100%' }}>
                         Proceed to Checkout
                     </Button>

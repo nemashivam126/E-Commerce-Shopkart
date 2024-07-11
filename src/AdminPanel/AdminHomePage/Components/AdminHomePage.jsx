@@ -7,7 +7,7 @@ const AdminHomePage = () => {
   return (
     <Container maxWidth="lg" sx={{ py: 3 }}>
       <section className="text-center mb-8">
-        <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#333' }}>
+        <Typography variant="h3" sx={{ fontWeight: 'bold' }}>
           Welcome to ShopKart
         </Typography>
         <Typography variant="h6" sx={{ color: '#777', mt: 1 }}>
@@ -22,7 +22,7 @@ const AdminHomePage = () => {
         <Grid container spacing={3} justifyContent="center">
           <Grid component={NavLink} to={'/admin/add-product'} item xs={12} md={6} lg={4} my={2} mx={2}>
             <Paper elevation={10} sx={{ borderRadius: '10px', p: 5 }}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333', mb: 2 }}>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
                 <AddShoppingCart /> Add Products
               </Typography>
               <Typography variant="body2" sx={{ color: '#777' }}>
@@ -32,7 +32,7 @@ const AdminHomePage = () => {
           </Grid>
           <Grid component={NavLink} to={'/admin/manage-products'} item xs={12} md={6} lg={4} my={2} mx={2}>
             <Paper elevation={10} sx={{ borderRadius: '10px', p: 5 }}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333', mb: 2 }}>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
                 <ManageHistory /> Manage Products
               </Typography>
               <Typography variant="body2" sx={{ color: '#777' }}>
@@ -42,7 +42,7 @@ const AdminHomePage = () => {
           </Grid>
           <Grid component={NavLink} to={'/admin/user-orders'} item xs={12} md={6} lg={4} my={2} mx={2}>
             <Paper elevation={10} sx={{ borderRadius: '10px', p: 5 }}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333', mb: 2 }}>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
                 <ViewList /> Manage Orders
               </Typography>
               <Typography variant="body2" sx={{ color: '#777' }}>
@@ -52,7 +52,7 @@ const AdminHomePage = () => {
           </Grid>
           <Grid component={NavLink} to={'/admin/add-admin-account'} item xs={12} md={6} lg={4} my={2} mx={2}>
             <Paper elevation={10} sx={{ borderRadius: '10px', p: 5 }}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333', mb: 2 }}>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
                 <PeopleAlt /> Adminstration
               </Typography>
               <Typography variant="body2" sx={{ color: '#777' }}>

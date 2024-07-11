@@ -6,6 +6,7 @@ import { userSignInAsync } from '../../Redux/AuthSlice/userSignIn';
 import { Link } from 'react-router-dom';
 import { adminSignInAsync } from '../../Redux/AuthSlice/adminSignIn';
 import LoginBg from '../../assets/LoginBg.jpg';
+import CustomTheme from '../../Theme/CustomTheme/CustomTheme';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
@@ -14,6 +15,7 @@ const LoginForm = () => {
   const auth = useSelector((state) => state.userSignIn);
   const [showPassword, setShowPassword] = useState(false);
   const [admin, setAdmin] = useState(false);
+  const AppTheme = useSelector((state) => state.theme.theme);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -81,14 +83,16 @@ const LoginForm = () => {
             {/* {auth.error && <Typography color="error">{auth.error}</Typography>} */}
           </Box>
         </Box>
-        {!admin && <Link to={'/signup'}><span className='flex justify-center text-[13px]'>Don't have an account? <span className='text-[#1976d2] font-bold ml-1'>Signup</span></span></Link>}
+        {/* text-[#1976d2] first color this comment is just for developers memo */}
+        {!admin && <Link to={'/signup'}><span className='flex justify-center text-[13px]'>Don't have an account? <span className='font-bold ml-1' style={{ color: AppTheme === 'Dark' ? CustomTheme.CustomColor[AppTheme].light : CustomTheme.CustomColor[AppTheme].main }}>Signup</span></span></Link>}
       </Paper>
       <FormControlLabel
         control={
           <Switch
             checked={admin}
             onChange={() => setAdmin(!admin)}
-            color="error"
+            // color="error"
+            sx={{ color: CustomTheme.CustomColor[AppTheme].main }}
           />
         }
         label='Login As Admin'

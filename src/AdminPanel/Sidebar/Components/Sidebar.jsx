@@ -22,13 +22,15 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signOut } from '../../../Redux/AuthSlice/auth';
 import { CircularProgress, MenuItem, Select } from '@mui/material';
 import ProfileMenu from '../../../Menu/Components/ProfileMenu';
 import AdminHomePage from '../../AdminHomePage/Components/AdminHomePage';
 import { ShoppingCart } from '@mui/icons-material';
 import { resetAdminData } from '../../../Redux/AccountDetailSlice/getAdminDetails';
+import CustomTheme from '../../../Theme/CustomTheme/CustomTheme';
+import DarkModeToggleButton from '../../../DarkModeToggle/Components/DarkModeToggleButton';
 
 const drawerWidth = 240;
 
@@ -105,6 +107,7 @@ export default function Sidebar() {
   const location = useLocation();
   const [isLogout, setIsLogout] = React.useState(false);
   const [filter, setFilter] = React.useState('ongoing'); // Default filter
+  const AppTheme = useSelector((state) => state.theme.theme);
   const SideBarMenuItem = [
     { text: "Add Product", icon: <AddShoppingCartIcon />, path: '/admin/add-product' },
     { text: "Manage Products", icon: <ManageHistoryIcon />, path: '/admin/manage-products' },
@@ -172,7 +175,7 @@ export default function Sidebar() {
                 onChange={(e) => setFilter(e.target.value)}
                 variant="outlined"
                 size='small'
-                sx={{ minWidth: 200, bgcolor: '#f2f3f4', mr:2 }}
+                sx={{ minWidth: 200, mr: 2, bgcolor: CustomTheme.CustomColor[AppTheme].light }}
               >
                 <MenuItem value="recent">Recent Orders</MenuItem>
                 <MenuItem value="delivered">Delivered Orders</MenuItem>
@@ -180,6 +183,7 @@ export default function Sidebar() {
                 <MenuItem value="ongoing">Current Orders</MenuItem>
               </Select>
             )}
+            <Box sx={{mx:1}}><DarkModeToggleButton /></Box>
             <ProfileMenu />
           </Box>
         </Toolbar>
@@ -203,12 +207,12 @@ export default function Sidebar() {
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
                   "&.active": {
-                    backgroundColor: "#1976d2",
+                    backgroundColor: CustomTheme.CustomColor[AppTheme].main,
                     color:'white'
                   },
                   "&:hover": {
                     transition: "0.1s",
-                    backgroundColor: '#B3D4E5',
+                    backgroundColor: CustomTheme.CustomColor[AppTheme].light,
                     color:'#ffffff',
                     borderRadius: '5px'
                   },

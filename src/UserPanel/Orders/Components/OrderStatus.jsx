@@ -202,7 +202,7 @@ const OrderStatus = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button variant='outlined' onClick={handleClose} color="primary">
+          <Button variant='outlined' onClick={handleClose} color="secondary">
             No
           </Button>
           <Button variant='contained' onClick={handleCancelOrder} color="error" autoFocus>

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateOrderStatusAsync } from '../../Redux/OrderSlice/OrderStatus';
 import { shortenDescription } from '../../UserPanel/Utils/shortDescription';
 import filterOrders from '../../Utils/OrderFilter';
+import CustomTheme from '../../Theme/CustomTheme/CustomTheme';
 
 const UserOrdersList = () => {
   const dispatch = useDispatch();
@@ -12,6 +13,7 @@ const UserOrdersList = () => {
   const [loading, setLoading] = useState(true);
   const { token } = useSelector(state => state.auth);
   const [selectedUser, setSelectedUser] = useState('all'); // Default to 'all' to show all orders
+  const AppTheme = useSelector((state) => state.theme.theme);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -117,7 +119,7 @@ const UserOrdersList = () => {
             size='small'
             value={selectedUser}
             onChange={handleUserChange}
-            sx={{ minWidth: 200, bgcolor: '#f2f3f4' }}
+            sx={{ minWidth: 200, bgcolor: CustomTheme.CustomColor[AppTheme].light }}
           >
             <MenuItem value="all">All Users</MenuItem>
             {users.map(user => (

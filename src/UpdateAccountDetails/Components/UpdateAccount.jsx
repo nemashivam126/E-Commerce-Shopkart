@@ -31,6 +31,7 @@ import { deleteUserAccountAsync } from '../../Redux/AccountDetailSlice/deleteAcc
 import { getAdminDetailsAsync } from '../../Redux/AccountDetailSlice/getAdminDetails';
 import { deleteAdminAccountAsync } from '../../Redux/AccountDetailSlice/deleteAdminAccount';
 import Loader from '../../Loader/Components/Loader';
+import CustomTheme from '../../Theme/CustomTheme/CustomTheme';
 
 const UpdateAccount = () => {
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ const UpdateAccount = () => {
   const [status, setStatus] = useState('idle');
   const [loadingModalOpen, setLoadingModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false); // State for delete confirmation modal
+  const AppTheme = useSelector((state) => state.theme.theme);
 
   useEffect(() => {
     if(user.isAdmin) {
@@ -179,7 +181,7 @@ const UpdateAccount = () => {
           boxShadow: 3,
           p: 3,
           borderRadius: 2,
-          background: 'white',
+          background: AppTheme === 'Dark' ? '#242424' : 'white',
           position: 'relative',
         }}
       >
@@ -198,8 +200,8 @@ const UpdateAccount = () => {
               position: 'absolute',
               bottom: 30,
               left: 140,
-              backgroundColor: 'lightgray',
-              '&:hover': { backgroundColor: 'white' },
+              backgroundColor: AppTheme === 'Dark' ? '#242424' : 'white',
+              '&:hover': { backgroundColor: CustomTheme.CustomColor[AppTheme].light },
             }}
           >
             <Edit fontSize='small' />
@@ -212,7 +214,7 @@ const UpdateAccount = () => {
               }}
             />
           </IconButton>
-          <Typography variant="h4" ml={6} gutterBottom>
+          <Typography variant="h4" ml={6} color={AppTheme === 'Dark' ? 'whitesmoke' : 'inherit'} gutterBottom>
             Update Profile
           </Typography>
         </Box>

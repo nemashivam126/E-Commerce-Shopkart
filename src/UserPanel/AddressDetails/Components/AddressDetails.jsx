@@ -10,6 +10,7 @@ import { setBuyNowData } from "../../../Redux/StatesSlice/States";
 import AddressForm from "../../AddressForm/Components/AddressForm";
 import Loader from "../../../Loader/Components/Loader";
 import { removeAddressAsync } from "../../../Redux/AddressSlice/removeAddress";
+import CustomTheme from "../../../Theme/CustomTheme/CustomTheme";
 
 const AddressDetails = () => {
     const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const AddressDetails = () => {
     const [openModal, setOpenModal] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
     const [addressID, setAddressID] = useState(null);
+    const AppTheme = useSelector((state) => state.theme.theme);
 
     useEffect(() => {
         dispatch(fetchAddresses(user.id));
@@ -108,7 +110,7 @@ const AddressDetails = () => {
                     ) : (
                         addresses.map(address => (
                         <Grid item xs={12} key={address._id}>
-                            <Paper elevation={3} sx={{ padding: 2, display: 'flex', alignItems: 'center', backgroundColor: selectedAddress?._id === address._id ? 'lightblue' : '#fff', cursor: 'pointer' }}>
+                            <Paper elevation={7} sx={{ padding: 2, display: 'flex', alignItems: 'center', backgroundColor: selectedAddress?._id === address._id ? CustomTheme.CustomColor[AppTheme].light : CustomTheme.CustomColor[AppTheme]?.lighter, cursor: 'pointer' }}>
                                 <Checkbox
                                     checked={selectedAddress?._id === address._id}
                                     onChange={() => handleCheckboxClick(address._id)}
@@ -126,7 +128,7 @@ const AddressDetails = () => {
                                     </Grid>
                                     <Grid item xs={2} sx={{ textAlign: 'center' }}>
                                         <IconButton onClick={() => handleEditAddress(address._id)} aria-label="Edit Address">
-                                            <Edit color='primary' />
+                                            <Edit color='warning' />
                                         </IconButton>
                                         <IconButton onClick={() => handleOpenDeleteDialog(address._id)} aria-label="Delete Address">
                                             <Delete color='error' />
@@ -138,7 +140,7 @@ const AddressDetails = () => {
                     )))
                 }
                 <Box sx={{textAlign:'center', mt: 2, display: 'flex', justifyContent: 'center'}}>
-                    {addresses.length !== 0 && <Button fullWidth onClick={handleAddOrUpdateAddress} variant="outlined" color="primary" sx={{ mr: 1 }}>
+                    {addresses.length !== 0 && <Button fullWidth onClick={handleAddOrUpdateAddress} variant={AppTheme === 'Dark' ? 'contained' : "outlined"} color="primary" sx={{ mr: 1}}>
                         Add Address
                     </Button>}
                     {!loading && <Button fullWidth={addresses.length === 0 ? false : true} onClick={handleCheckout} variant="contained" color="primary" sx={{ ml: 1 }}>
@@ -157,7 +159,7 @@ const AddressDetails = () => {
                     open={isDelete}
                     onClose={handleCloseModal}
                 >
-                    <DialogTitle sx={{color:'error.light', display: 'flex', alignItems:'center'}} fontWeight={600}>
+                    <DialogTitle sx={{color:'error.main', display: 'flex', alignItems:'center'}} fontWeight={600}>
                         Delete Address?
                     </DialogTitle>
                     <DialogContent>
@@ -166,7 +168,7 @@ const AddressDetails = () => {
                         </Typography>
                     </DialogContent>
                     <DialogActions sx={{mr:1.5, mb:1.5}}>
-                        <Button variant="outlined" sx={{textTransform:'none'}} onClick={handleCloseModal}>Cancel</Button>
+                        <Button color="secondary" variant="outlined" sx={{textTransform:'none'}} onClick={handleCloseModal}>Cancel</Button>
                         <Button variant="contained" sx={{textTransform:'none'}} color="error" onClick={handleConfirmDelete}>Yes, Delete</Button>
                     </DialogActions>
                 </Dialog>

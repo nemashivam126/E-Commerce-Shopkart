@@ -106,7 +106,7 @@ const Products = () => {
           [`& .MuiDrawer-paper`]: { width: 240, boxSizing: 'border-box', top: 64, height: 'auto' },
         }}
       >
-        <Box sx={{ overflow: 'auto' }}>
+        <Box sx={{ overflow: 'auto', height:'100vh' }}>
           <List>
             <ListItem>
               <Typography variant="h6">Price Range</Typography>

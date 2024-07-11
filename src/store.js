@@ -26,6 +26,7 @@ import deleteAccount from "./Redux/AccountDetailSlice/deleteAccount";
 import deleteAdminAccount from "./Redux/AccountDetailSlice/deleteAdminAccount";
 import getAdminDetails from "./Redux/AccountDetailSlice/getAdminDetails";
 import removeAddress from "./Redux/AddressSlice/removeAddress";
+import Theme from "./Redux/ThemeSlice/Theme";
 
 const rootReducer = combineReducers({
     snackbar: snackbarSlice,
@@ -52,13 +53,14 @@ const rootReducer = combineReducers({
     deleteUserAccount: deleteAccount,
     deleteAdminAccount: deleteAdminAccount,
     getAdminDetails: getAdminDetails,
-    removeAddress: removeAddress
+    removeAddress: removeAddress,
+    theme: Theme
 })
 
 const persistConfig = {
     key: "root",
     storage,
-    whitelist: ["auth", "adminSignIn", "userSignIn", "adminSignUp", "userSignUp", "getProduct", "getUserCart", "orders", "selectedAddress", "orderStatus"] //slices to be persisted
+    whitelist: ["auth", "adminSignIn", "userSignIn", "adminSignUp", "userSignUp", "getProduct", "getUserCart", "orders", "selectedAddress", "orderStatus", "theme"] //slices to be persisted
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
