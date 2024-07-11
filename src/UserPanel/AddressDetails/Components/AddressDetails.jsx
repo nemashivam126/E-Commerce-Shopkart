@@ -1,5 +1,5 @@
-import { Edit, LocationOff } from "@mui/icons-material";
-import { Alert, Box, Button, Checkbox, Container, Dialog, Grid, IconButton, Paper, Typography } from "@mui/material";
+import { Delete, Edit, LocationOff } from "@mui/icons-material";
+import { Alert, Box, Button, Checkbox, Container, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ import { selectAddress, setSelectedAddress } from "../../../Redux/AddressSlice/S
 import { setBuyNowData } from "../../../Redux/StatesSlice/States";
 import AddressForm from "../../AddressForm/Components/AddressForm";
 import Loader from "../../../Loader/Components/Loader";
+import { removeAddressAsync } from "../../../Redux/AddressSlice/removeAddress";
 
 const AddressDetails = () => {
     const dispatch = useDispatch();
@@ -18,6 +19,8 @@ const AddressDetails = () => {
     const { selectedAddress } = useSelector(state => state.selectedAddress);
     const { buyNowData } = useSelector(state => state.shopkartStates);
     const [openModal, setOpenModal] = useState(false);
+    const [isDelete, setIsDelete] = useState(false);
+    const [addressID, setAddressID] = useState(null);
 
     useEffect(() => {
         dispatch(fetchAddresses(user.id));
@@ -66,8 +69,22 @@ const AddressDetails = () => {
         setOpenModal(true);
     };
 
+    const handleOpenDeleteDialog = (addressId) => {
+        setAddressID(addressId)
+        setIsDelete(true);
+    };
+
     const handleCloseModal = () => {
         setOpenModal(false);
+        setIsDelete(false);
+        dispatch(fetchAddresses(user.id));
+    };
+
+    const handleConfirmDelete = () => {
+        const userID = user.id;
+        dispatch(removeAddressAsync({userId: userID, addressId: addressID}));
+        setIsDelete(false);
+        handleCloseModal();
         dispatch(fetchAddresses(user.id));
     };
 
@@ -104,12 +121,15 @@ const AddressDetails = () => {
                                     </Grid>
                                     <Grid item xs={10}>
                                         <Typography variant="body1">{address.houseNo}</Typography>
-                                        <Typography variant="subtitle1">{address?.landmark && address?.landmark}, {address.street}, {address.city}</Typography>
+                                        <Typography variant="subtitle1">{address?.landmark && address?.landmark} {address?.landmark && `,`} {address.street}, {address.city}</Typography>
                                         <Typography variant="body2" color="textSecondary">{address.state}, {address.pincode}</Typography>
                                     </Grid>
                                     <Grid item xs={2} sx={{ textAlign: 'center' }}>
                                         <IconButton onClick={() => handleEditAddress(address._id)} aria-label="Edit Address">
                                             <Edit color='primary' />
+                                        </IconButton>
+                                        <IconButton onClick={() => handleOpenDeleteDialog(address._id)} aria-label="Delete Address">
+                                            <Delete color='error' />
                                         </IconButton>
                                     </Grid>
                                 </Grid>
@@ -131,6 +151,24 @@ const AddressDetails = () => {
                     onClose={handleCloseModal}
                 >
                     <Box><AddressForm isEdit={true} editAddressValues={selectedAddress} onClose={handleCloseModal} /></Box>
+                </Dialog>
+                 {/* Dialog box for Delete Address */}
+                 <Dialog
+                    open={isDelete}
+                    onClose={handleCloseModal}
+                >
+                    <DialogTitle sx={{color:'error.light', display: 'flex', alignItems:'center'}} fontWeight={600}>
+                        Delete Address?
+                    </DialogTitle>
+                    <DialogContent>
+                        <Typography variant="subtitle1">
+                            {`Are you sure you want to delete this address?`} 
+                        </Typography>
+                    </DialogContent>
+                    <DialogActions sx={{mr:1.5, mb:1.5}}>
+                        <Button variant="outlined" sx={{textTransform:'none'}} onClick={handleCloseModal}>Cancel</Button>
+                        <Button variant="contained" sx={{textTransform:'none'}} color="error" onClick={handleConfirmDelete}>Yes, Delete</Button>
+                    </DialogActions>
                 </Dialog>
             </Box>
         </Container>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, Grid, TextField, Typography, Paper } from '@mui/material';
+import { Box, Button, Grid, TextField, Typography, Paper, MenuItem } from '@mui/material';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -8,14 +8,29 @@ import { addSnackbarState } from '../../../Redux/Snackbar/SnackbarSlice';
 import { useNavigate } from 'react-router-dom';
 
 const validationSchema = Yup.object().shape({
-  label: Yup.string().required('Label is required'),
-  houseNo: Yup.string().required('House No is required'),
-  street: Yup.string().required('Street is required'),
-  landmark: Yup.string(),
-  city: Yup.string().required('City is required'),
-  state: Yup.string().required('State is required'),
-  pincode: Yup.string().required('Pincode is required'),
-  country: Yup.string().required('Country is required'),
+  label: Yup.string()
+    .matches(/^(?!\s)(?!.*\s$)(?!.*\s{2,})[a-zA-Z\s]+$/, 'Label must contain only letters and spaces, cannot start or end with a space, and must not have consecutive spaces')
+    .required('Label is required'),
+  houseNo: Yup.string()
+    .matches(/^(?!\s)(?!.*\s$)(?!.*\s{2,})[\w\s\\/-]+$/, 'House No cannot start or end with a space, and must not have consecutive spaces')
+    .required('House No is required'),
+  street: Yup.string()
+    .matches(/^(?!\s)(?!.*\s$)(?!.*\s{2,})[\w\s\\/-]+$/, 'Street cannot start or end with a space, and must not have consecutive spaces')
+    .required('Street is required'),
+  landmark: Yup.string()
+    .trim(),
+  city: Yup.string()
+    .matches(/^(?!\s)(?!.*\s$)(?!.*\s{2,})[a-zA-Z\s]+$/, 'City must contain only letters and spaces, cannot start or end with a space, and must not have consecutive spaces')
+    .required('City is required'),
+  state: Yup.string()
+    .matches(/^(?!\s)(?!.*\s$)(?!.*\s{2,})[a-zA-Z\s]+$/, 'State must contain only letters and spaces, cannot start or end with a space, and must not have consecutive spaces')
+    .required('State is required'),
+  pincode: Yup.string()
+    .matches(/^\d{6}$/, 'Pincode must be a 6-digit number')
+    .required('Pincode is required'),
+  country: Yup.string()
+    .matches(/^(?!\s)(?!.*\s$)(?!.*\s{2,})[a-zA-Z\s]+$/, 'Country must contain only letters and spaces, cannot start or end with a space, and must not have consecutive spaces')
+    .required('Country is required'),
 });
 
 const initialValues = {
@@ -69,7 +84,6 @@ const AddressForm = ({isEdit = false, editAddressValues = {}, onClose}) => {
       setSubmitting(false);
     }
   };
-console.log();
   return (
     <Paper
       elevation={3}
@@ -77,7 +91,7 @@ console.log();
         padding: 4,
         maxWidth: 800,
         margin: 'auto',
-        mt: 4,
+        mt: isEdit ? 0 : 15,
         borderRadius: 2,
       }}
     >
@@ -92,17 +106,38 @@ console.log();
         {({ isSubmitting }) => (
           <Form>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <Field name="label">
                   {({ field, meta }) => (
                     <TextField
                       {...field}
-                      label="Label"
+                      label={<><span>Label</span> <span style={{ color: 'red' }}>*</span></>}
                       variant="outlined"
                       fullWidth
                       error={meta.touched && Boolean(meta.error)}
                       helperText={meta.touched && meta.error}
                     />
+                  )}
+                </Field>
+              </Grid> */}
+              <Grid item xs={12}>
+                <Field name="label">
+                  {({ field, meta }) => (
+                    <TextField
+                      {...field}
+                      select
+                      label={<><span>Label</span> <span style={{ color: 'red' }}>*</span></>}
+                      variant="outlined"
+                      fullWidth
+                      error={meta.touched && Boolean(meta.error)}
+                      helperText={meta.touched && meta.error}
+                    >
+                      <MenuItem value="">Select Label</MenuItem>
+                      <MenuItem value="Home">Home</MenuItem>
+                      <MenuItem value="Work">Work</MenuItem>
+                      <MenuItem value="Friend">Friend</MenuItem>
+                      <MenuItem value="Other">Other</MenuItem>
+                    </TextField>
                   )}
                 </Field>
               </Grid>
@@ -111,7 +146,7 @@ console.log();
                   {({ field, meta }) => (
                     <TextField
                       {...field}
-                      label="House No"
+                      label={<><span>House No</span> <span style={{ color: 'red' }}>*</span></>}
                       variant="outlined"
                       fullWidth
                       error={meta.touched && Boolean(meta.error)}
@@ -125,7 +160,7 @@ console.log();
                   {({ field, meta }) => (
                     <TextField
                       {...field}
-                      label="Street"
+                      label={<><span>Street</span> <span style={{ color: 'red' }}>*</span></>}
                       variant="outlined"
                       fullWidth
                       error={meta.touched && Boolean(meta.error)}
@@ -153,7 +188,7 @@ console.log();
                   {({ field, meta }) => (
                     <TextField
                       {...field}
-                      label="City"
+                      label={<><span>City</span> <span style={{ color: 'red' }}>*</span></>}
                       variant="outlined"
                       fullWidth
                       error={meta.touched && Boolean(meta.error)}
@@ -167,7 +202,7 @@ console.log();
                   {({ field, meta }) => (
                     <TextField
                       {...field}
-                      label="State"
+                      label={<><span>State</span> <span style={{ color: 'red' }}>*</span></>}
                       variant="outlined"
                       fullWidth
                       error={meta.touched && Boolean(meta.error)}
@@ -181,7 +216,7 @@ console.log();
                   {({ field, meta }) => (
                     <TextField
                       {...field}
-                      label="Pincode"
+                      label={<><span>Pincode</span> <span style={{ color: 'red' }}>*</span></>}
                       variant="outlined"
                       fullWidth
                       error={meta.touched && Boolean(meta.error)}
@@ -195,7 +230,7 @@ console.log();
                   {({ field, meta }) => (
                     <TextField
                       {...field}
-                      label="Country"
+                      label={<><span>Country</span> <span style={{ color: 'red' }}>*</span></>}
                       variant="outlined"
                       fullWidth
                       error={meta.touched && Boolean(meta.error)}

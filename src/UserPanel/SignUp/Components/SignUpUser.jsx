@@ -62,14 +62,18 @@ const SignUpUser = () => {
       image: null,
     },
     validationSchema: Yup.object({
-      fname: Yup.string().required('First name is required'),
-      lname: Yup.string().required('Last name is required'),
+      fname: Yup.string()
+        .matches(/^(?!\s)(?!.*\s$)(?!.*\s{2,})[a-zA-Z\s]+$/, 'First name must contain only letters and spaces, cannot start or end with a space, and must not have consecutive spaces')
+        .required('First name is required'),
+      lname: Yup.string()
+        .matches(/^(?!\s)(?!.*\s$)(?!.*\s{2,})[a-zA-Z\s]+$/, 'Last name must contain only letters and spaces, cannot start or end with a space, and must not have consecutive spaces')
+        .required('Last name is required'),
       contactNumber: Yup.string()
         .required('Contact number is required')
         .matches(
           /^[0-9]{10}$/,
           'Contact number must be exactly 10 digits'
-      ),
+        ),
       email: Yup.string().email('Invalid email address').required('Email is required'),
       gender: Yup.string().required('Gender is required'),
       password: Yup.string().required('Password is required').min(6, 'Password must be at least 6 characters long'),
@@ -143,7 +147,7 @@ const SignUpUser = () => {
               <TextField
                 fullWidth
                 id="fname"
-                label="First Name"
+                label={<><span>First Name</span> <span style={{ color: 'red' }}>*</span></>}
                 name="fname"
                 value={formik.values.fname}
                 onChange={formik.handleChange}
@@ -155,7 +159,7 @@ const SignUpUser = () => {
               <TextField
                 fullWidth
                 id="lname"
-                label="Last Name"
+                label={<><span>Last Name</span> <span style={{ color: 'red' }}>*</span></>}
                 name="lname"
                 value={formik.values.lname}
                 onChange={formik.handleChange}
@@ -167,7 +171,7 @@ const SignUpUser = () => {
               <TextField
                 fullWidth
                 id="contactNumber"
-                label="Contact Number"
+                label={<><span>Contact Number</span> <span style={{ color: 'red' }}>*</span></>}
                 name="contactNumber"
                 value={formik.values.contactNumber}
                 onChange={formik.handleChange}
@@ -179,7 +183,7 @@ const SignUpUser = () => {
               <TextField
                 fullWidth
                 id="email"
-                label="Email"
+                label={<><span>Email</span> <span style={{ color: 'red' }}>*</span></>}
                 name="email"
                 value={formik.values.email}
                 onChange={formik.handleChange}
@@ -189,7 +193,7 @@ const SignUpUser = () => {
             </Grid>
             <Grid item xs={12}>
               <FormControl fullWidth>
-                <InputLabel>Gender</InputLabel>
+                <InputLabel><><span>Gender</span> <span style={{ color: 'red' }}>*</span></></InputLabel>
                 <Select
                   name="gender"
                   label="Gender"
@@ -220,7 +224,7 @@ const SignUpUser = () => {
                     </InputAdornment>
                   ),
                 }}
-                label="Password"
+                label={<><span>Password</span> <span style={{ color: 'red' }}>*</span></>}
                 error={formik.touched.password && Boolean(formik.errors.password)}
                 helperText={formik.touched.password && formik.errors.password}
               />
@@ -239,7 +243,7 @@ const SignUpUser = () => {
                     </InputAdornment>
                   ),
                 }}
-                label="Confirm Password"
+                label={<><span>Confirm Password</span> <span style={{ color: 'red' }}>*</span></>}
                 error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
                 helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
               />

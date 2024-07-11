@@ -25,6 +25,7 @@ import getUserDetails from "./Redux/AccountDetailSlice/getUserDetails";
 import deleteAccount from "./Redux/AccountDetailSlice/deleteAccount";
 import deleteAdminAccount from "./Redux/AccountDetailSlice/deleteAdminAccount";
 import getAdminDetails from "./Redux/AccountDetailSlice/getAdminDetails";
+import removeAddress from "./Redux/AddressSlice/removeAddress";
 
 const rootReducer = combineReducers({
     snackbar: snackbarSlice,
@@ -50,7 +51,8 @@ const rootReducer = combineReducers({
     getUserDetails: getUserDetails,
     deleteUserAccount: deleteAccount,
     deleteAdminAccount: deleteAdminAccount,
-    getAdminDetails: getAdminDetails
+    getAdminDetails: getAdminDetails,
+    removeAddress: removeAddress
 })
 
 const persistConfig = {

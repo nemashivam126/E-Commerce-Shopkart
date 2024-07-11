@@ -178,7 +178,7 @@ function ProductForm({ isUpdate, initialProductData, handleClose }) {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <FormControl fullWidth error={formik.touched.category && Boolean(formik.errors.category)}>
-                            <InputLabel>Category</InputLabel>
+                            <InputLabel><><span>Category</span><span className="text-red-500">*</span></></InputLabel>
                             <Select
                                 label={<><span>Category</span><span className="text-red-500">*</span></>}
                                 name="category"
