@@ -93,7 +93,7 @@ const AddressDetails = () => {
     return (
         <Container maxWidth={"md"}>
             <Box px={10} py={2}>
-                <Typography textAlign={'center'} variant="h5" gutterBottom sx={{ mt: 2, mb:2 }}>
+                <Typography textAlign={'center'} variant="h5" color={AppTheme === 'Dark' ? 'whitesmoke' : 'inherit'} gutterBottom sx={{ mt: 2, mb:2 }}>
                     Your Addresses
                 </Typography>
                 {/* loader */}
