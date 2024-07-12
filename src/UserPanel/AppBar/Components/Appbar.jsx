@@ -34,41 +34,49 @@ function ResponsiveAppBar() {
   const AppTheme = useSelector((state) => state.theme.theme);
   const pages = [
     { text: "Products", path: '/products' },
-    // { text: "Cart", path: '/cart' },
+    { text: "Cart", path: '/cart' },
   ];
   const settings = [
-      { text: "Profile", icon: <AccountCircleIcon /> },
-      { text: "Logout", icon: <LogoutIcon /> },
+    { text: "Profile", icon: <AccountCircleIcon /> },
+    { text: "Logout", icon: <LogoutIcon /> },
   ];
   useEffect(() => {
-    dispatch(getCartCountAsync(userInfo.id));
-  },[])
+    if (userInfo) {
+      dispatch(getCartCountAsync(userInfo.id));
+    }
+  }, [dispatch, userInfo]);
+
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
+
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
   const handleUserMenu = (text) => {
-    if(text === "Logout") {
+    if (text === "Logout") {
       dispatch(signOut());
-      localStorage.removeItem('token')
+      localStorage.removeItem('token');
     }
     setAnchorElUser(null);
   };
+
   const handleSearch = (e) => {
     setSearchInput(e.target.value);
     dispatch(setSearchTerm(e.target.value));
-  }
+  };
+
   const handleSearchString = () => {
-    if (searchInput.trim() !== "") { // Ensure the search input is not empty
+    if (searchInput.trim() !== "") {
       dispatch(setSearchTerm(searchInput));
       navigate('/products');
     }
-  }
+  };
 
   return (
     <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
@@ -125,34 +133,25 @@ function ResponsiveAppBar() {
               sx={{
                 display: { xs: 'block', md: 'none' },
               }}
-            >
+            > <Typography
+                component={Link}
+                to={'/'}
+                noWrap
+                sx={{
+                  padding: '6px 16px'
+                }}
+              >
+                Home
+              </Typography>
               {pages.map((page) => (
-                <MenuItem key={page.text} onClick={handleCloseNavMenu}>
+                <MenuItem key={page.text} onClick={handleCloseNavMenu} component={Link} to={page.path}>
                   <Typography textAlign="center">{page.text}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <ShoppingCartIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          <Typography
-            component={Link}
-            to={'/'}
-            variant="h5"
-            noWrap
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            Shopkart
-          </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {pages.filter(item => item.text != 'Cart').map((page) => (
               <Button
                 key={page.text}
                 LinkComponent={NavLink}
@@ -170,18 +169,23 @@ function ResponsiveAppBar() {
             ))}
           </Box>
           <Paper
-            sx={{ p: '0px 4px', mr: 10, display: 'flex', alignItems: 'center', width: 400,  }}
+            component="form"
+            sx={{ p: '0px 4px', mr: { xs: 2, md: 10 }, display: 'flex', alignItems: 'center', width: { xs: 200, sm: 300, md: 400 }, }}
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSearchString();
+            }}
           >
             <InputBase
               sx={{ ml: 1, flex: 1 }}
               placeholder="Search Products"
               onChange={handleSearch}
             />
-            <IconButton onClick={handleSearchString} sx={{ p: '10px' }}>
+            <IconButton type="submit" sx={{ p: '10px' }}>
               <SearchIcon />
             </IconButton>
           </Paper>
-            <IconButton sx={{fontSize: '16px', mr: 2, fontWeight: 700, color: AppTheme === "Dark" ? CustomTheme.CustomColor.Common.dullWhite : CustomTheme.CustomColor[AppTheme].light, "&.active": {
+          <IconButton sx={{ display: { xs: 'none', md: 'flex' }, fontSize: '16px', mr: 2, fontWeight: 700, color: AppTheme === "Dark" ? CustomTheme.CustomColor.Common.dullWhite : CustomTheme.CustomColor[AppTheme].light, "&.active": {
                         fontWeight: '700',
                         color:'white'
                       }, "&.MuiButtonBase-root:hover": {
@@ -192,7 +196,8 @@ function ResponsiveAppBar() {
               <ShoppingCartIcon />
             </Badge>
           </IconButton>
-          <Box sx={{mx:1}}><DarkModeToggleButton /></Box>
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, mx: 1 }}><DarkModeToggleButton /></Box>
+          <Box sx={{ display: { xs: 'flex', md: 'none' }}}><DarkModeToggleButton /></Box>
           <Box sx={{ flexGrow: 0 }}>
             <ProfileMenu />
           </Box>
@@ -201,4 +206,5 @@ function ResponsiveAppBar() {
     </AppBar>
   );
 }
+
 export default ResponsiveAppBar;

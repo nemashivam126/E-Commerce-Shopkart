@@ -72,7 +72,7 @@ const HomePage = () => {
         <p className="text-lg text-gray-600">&copy; 2024 ShopKart. All rights reserved.</p>
       </footer> */}
       
-      <div className='absolute w-full left-0 bottom-0'>
+      <div className='fixed w-full left-0 bottom-0'>
         <Footer />
       </div>
     </Container>

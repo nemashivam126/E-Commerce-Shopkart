@@ -9,7 +9,7 @@ function App() {
   const AppTheme = useSelector((state) => state.theme.theme);
 
   return (
-    <div style={{backgroundColor: AppTheme === 'Dark' ? CustomTheme.CustomColor[AppTheme].dark : 'transparent', height: '100vh'}}>
+    <div style={{backgroundColor: AppTheme === 'Dark' ? CustomTheme.CustomColor[AppTheme].dark : 'transparent', height: '100vh', overflow: 'auto'}}>
       <RouterProvider router={AppRoutes} />
       <SnackBar />
     </div>
