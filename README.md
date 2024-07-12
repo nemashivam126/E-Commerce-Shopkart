@@ -4,6 +4,8 @@ Shopkart is a dummy e-commerce application designed to simulate an online shoppi
 ## Demo
 You can view the live application here: [E-Commerce Shopkart](https://ecommerce-shopkart.vercel.app)
 
+- **Backend Repository**: [GitHub Repo](https://github.com/nemashivam126/E-Commerce-Shopkart-Backend)
+
 ## Features
 - Browse products
 - Add products to the shopping cart
@@ -19,6 +21,7 @@ You can view the live application here: [E-Commerce Shopkart](https://ecommerce-
 - MongoDB with Mongoose
 - Redux
 - Material-UI
+- JWT (JSON Web Token) for authentication and authorization
 - Cloudinary (for media storage)
 - Multer (for file uploads)
 - Vercel (for deployment)
