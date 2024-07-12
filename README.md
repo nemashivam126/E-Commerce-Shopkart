@@ -25,5 +25,5 @@ You can view the live application here: [E-Commerce Shopkart](https://ecommerce-
 
 ## Contact
 For any queries, including requesting credentials for admin or further information, please feel free to reach out:
-- Email: nemashivam126@gmail.com
-- LinkedIn: https://www.linkedin.com/in/shivam-nema126
+- [Email](nemashivam126@gmail.com)
+- [LinkedIn](https://www.linkedin.com/in/shivam-nema126)
