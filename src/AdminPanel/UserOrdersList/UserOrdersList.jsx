@@ -6,6 +6,7 @@ import { updateOrderStatusAsync } from '../../Redux/OrderSlice/OrderStatus';
 import { shortenDescription } from '../../UserPanel/Utils/shortDescription';
 import filterOrders from '../../Utils/OrderFilter';
 import CustomTheme from '../../Theme/CustomTheme/CustomTheme';
+import { Image } from '@mui/icons-material';
 
 const UserOrdersList = () => {
   const dispatch = useDispatch();
@@ -148,19 +149,19 @@ const UserOrdersList = () => {
                     {order.items.map(item => (
                       <ListItem key={item._id} sx={{ display: 'flex', alignItems: 'center' }}>
                         <ListItemAvatar>
-                          <Avatar variant="square" src={item.productId.thumbnail} sx={{ width: 100, height: 100, marginRight: 2, borderRadius: 2 }} />
+                          {item.productId?.thumbnail ? <Avatar variant="square" src={item.productId?.thumbnail} sx={{ width: 100, height: 100, marginRight: 2, borderRadius: 2 }} /> : <Image sx={{ width: 100, height: 100, marginRight: 2, borderRadius: 2 }} />}
                         </ListItemAvatar>
                         <ListItemText
-                          primary={item.productId.title}
+                          primary={item.productId?.title}
                           secondary={
                             <>
                               <Typography variant="body2" component="span" color="textSecondary">
-                                {shortenDescription(item.productId.description)}
+                                {item.productId?.description && shortenDescription(item.productId?.description)}
                               </Typography>
-                              <Typography variant="body2">Size: {item.productSize}</Typography>
-                              <Typography variant="body2">Color: {item.productColor}</Typography>
-                              <Typography variant="body2">Quantity: {item.quantity}</Typography>
-                              <Typography variant="body2">Price: ₹{item.amount.toFixed(2)}</Typography>
+                              <Typography variant="body2">Size: {item?.productSize}</Typography>
+                              <Typography variant="body2">Color: {item?.productColor}</Typography>
+                              <Typography variant="body2">Quantity: {item?.quantity}</Typography>
+                              <Typography variant="body2">Price: ₹{item?.amount.toFixed(2)}</Typography>
                             </>
                           }
                         />
