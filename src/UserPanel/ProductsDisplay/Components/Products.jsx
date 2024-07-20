@@ -101,6 +101,7 @@ const Products = () => {
         variant="permanent"
         anchor="left"
         sx={{
+          display: { xs: 'none', md: 'flex' },
           width: 240,
           flexShrink: 0,
           [`& .MuiDrawer-paper`]: { width: 240, boxSizing: 'border-box', top: 64, height: 'auto' },

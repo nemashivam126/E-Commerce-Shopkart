@@ -71,7 +71,7 @@ export default function ProfileMenu() {
     <>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
         {/* <Typography sx={{ minWidth: 100 }}>Contact</Typography> */}
-        <Typography sx={{  fontWeight: 'bold', mr:-1.8 }}>{firstName +' '+ lastName}</Typography>
+        <Typography sx={{  display: { xs: 'none', md: 'flex' }, fontWeight: 'bold', mr:-1.8 }}>{firstName +' '+ lastName}</Typography>
         <Tooltip title="Account settings">
           <IconButton
             onClick={handleClick}
